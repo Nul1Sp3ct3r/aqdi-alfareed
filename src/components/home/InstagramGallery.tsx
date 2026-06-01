@@ -1,50 +1,47 @@
 'use client'
-
-import { Instagram } from 'lucide-react'
 import Image from 'next/image'
+import { Instagram } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
-import SectionTitle from '@/components/ui/SectionTitle'
-
-// CONNECT: Replace with real Instagram feed using Instagram Graph API
-const galleryImages = [
-  { id: 1, src: 'https://placehold.co/400x400/1a1a1a/d4af37', alt: 'Jewelry 1' },
-  { id: 2, src: 'https://placehold.co/400x400/111111/c0c0c0', alt: 'Jewelry 2' },
-  { id: 3, src: 'https://placehold.co/400x400/0d0d0d/d4af37', alt: 'Jewelry 3' },
-  { id: 4, src: 'https://placehold.co/400x400/1a1a1a/e8c94d', alt: 'Jewelry 4' },
-  { id: 5, src: 'https://placehold.co/400x400/111111/d4af37', alt: 'Jewelry 5' },
-  { id: 6, src: 'https://placehold.co/400x400/0d0d0d/c0c0c0', alt: 'Jewelry 6' },
-]
+import { products } from '@/data/products'
+import { siteConfig } from '@/lib/config'
 
 export default function InstagramGallery() {
-  const { t, isRTL } = useLanguage()
+  const { t, lang, isRTL } = useLanguage()
+
+  // Use all real product images for the gallery
+  const galleryItems = products.slice(0, 9).map(p => ({
+    src: p.images[0],
+    alt: p.name[lang],
+    id: p.id,
+  }))
 
   return (
-    <section className="section-padding bg-dark-deeper">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <SectionTitle
-          title={t.gallery.title}
-          subtitle={t.gallery.subtitle}
-          className="mb-10"
-        />
+    <section className="section-y bg-ink relative">
+      <div className="absolute inset-x-0 top-0 h-px gold-rule" />
 
-        {/* Grid */}
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-3">
-          {galleryImages.map((img, i) => (
-            <a
-              key={img.id}
-              href="#" // CONNECT: Link to your Instagram post
-              className="group relative aspect-square overflow-hidden rounded-xl md:rounded-2xl"
+      <div className="wrap">
+        <div className="text-center mb-10">
+          <span className="label-gold block mb-4">{t.gallery.title}</span>
+          <p className="text-white/35 text-sm">{t.gallery.subtitle}</p>
+        </div>
+
+        {/* 3×3 product photo grid */}
+        <div className="grid grid-cols-3 gap-2 md:gap-3 max-w-3xl mx-auto">
+          {galleryItems.map((item, i) => (
+            <a key={item.id} href={siteConfig.instagramUrl}
+              target="_blank" rel="noopener noreferrer"
+              className="group relative overflow-hidden rounded-xl md:rounded-2xl"
+              style={{ aspectRatio: '1/1' }}
             >
               <Image
-                src={img.src}
-                alt={img.alt}
+                src={item.src}
+                alt={item.alt}
                 fill
-                className="object-cover transition-transform duration-500 group-hover:scale-110"
-                sizes="(max-width: 768px) 33vw, 17vw"
+                className="object-cover transition-transform duration-600 group-hover:scale-[1.08]"
+                sizes="(max-width: 768px) 33vw, 225px"
               />
-              {/* Hover overlay */}
-              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <Instagram size={22} className="text-white" />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
+                <Instagram size={22} className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
             </a>
           ))}
@@ -52,14 +49,12 @@ export default function InstagramGallery() {
 
         {/* Instagram CTA */}
         <div className="text-center mt-8">
-          {/* CONNECT: Replace # with your actual Instagram profile URL */}
-          <a
-            href="#"
-            className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-dark-border hover:border-gold/30 text-white/60 hover:text-gold transition-all duration-200 text-sm font-medium group"
+          <a href={siteConfig.instagramUrl} target="_blank" rel="noopener noreferrer"
+            className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-ink-border hover:border-gold-border text-white/40 hover:text-gold transition-all text-sm font-medium"
           >
-            <Instagram size={18} />
+            <Instagram size={17} />
             <span>{isRTL ? 'تابعينا على إنستغرام' : 'Follow us on Instagram'}</span>
-            <span className="text-white/30">@aqdi.alfareed</span>
+            <span className="text-white/20">@aqdi.alfareed</span>
           </a>
         </div>
       </div>

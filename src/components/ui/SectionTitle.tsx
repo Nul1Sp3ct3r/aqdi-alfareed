@@ -1,8 +1,8 @@
 'use client'
-
 import { useLanguage } from '@/context/LanguageContext'
 
 interface SectionTitleProps {
+  label?: string
   title: string
   subtitle?: string
   center?: boolean
@@ -10,32 +10,21 @@ interface SectionTitleProps {
   className?: string
 }
 
-export default function SectionTitle({
-  title,
-  subtitle,
-  center = true,
-  light = false,
-  className = '',
-}: SectionTitleProps) {
+export default function SectionTitle({ label, title, subtitle, center = true, light = false, className = '' }: SectionTitleProps) {
   const { isRTL } = useLanguage()
+  const align = center ? 'text-center' : isRTL ? 'text-right' : 'text-left'
 
   return (
-    <div className={`${center ? 'text-center' : isRTL ? 'text-right' : 'text-left'} ${className}`}>
-      <h2
-        className={`text-3xl md:text-4xl font-serif font-semibold tracking-wide mb-3
-          ${light ? 'text-dark-deeper' : 'text-white'}`}
-      >
+    <div className={`${align} ${className}`}>
+      {label && (
+        <span className="label-gold block mb-4">{label}</span>
+      )}
+      <h2 className={`display-serif text-3xl md:text-4xl lg:text-5xl mb-4 ${light ? 'text-ink-deep' : 'text-white'}`}>
         {title}
       </h2>
-
-      {/* Gold underline accent */}
-      <div className={`h-0.5 w-16 bg-gradient-gold rounded-full mb-4
-        ${center ? 'mx-auto' : isRTL ? 'mr-0' : 'ml-0'}`}
-      />
-
+      <div className={`h-px w-12 bg-gradient-gold-h rounded-full mb-5 ${center ? 'mx-auto' : isRTL ? '' : ''}`} />
       {subtitle && (
-        <p className={`text-base md:text-lg max-w-2xl ${center ? 'mx-auto' : ''} leading-relaxed
-          ${light ? 'text-gray-600' : 'text-white/60'}`}>
+        <p className={`text-base leading-relaxed max-w-xl ${center ? 'mx-auto' : ''} ${light ? 'text-ink-lifted' : 'text-white/50'}`}>
           {subtitle}
         </p>
       )}

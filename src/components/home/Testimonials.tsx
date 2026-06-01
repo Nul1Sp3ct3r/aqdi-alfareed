@@ -1,5 +1,4 @@
 'use client'
-
 import { Star, Quote } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
 import { testimonials } from '@/data/products'
@@ -9,52 +8,43 @@ export default function Testimonials() {
   const { t, lang } = useLanguage()
 
   return (
-    <section className="section-padding bg-dark relative overflow-hidden">
-      {/* Gold glow */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
+    <section className="section-y bg-ink-deep relative overflow-hidden">
+      <div className="absolute inset-x-0 top-0 h-px gold-rule" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+      <div className="wrap">
         <SectionTitle
+          label="Reviews"
           title={t.testimonials.title}
           subtitle={t.testimonials.subtitle}
-          className="mb-12"
+          className="mb-14"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {testimonials.map((testimonial, i) => (
-            <div
-              key={testimonial.id}
-              className="relative p-6 rounded-2xl bg-dark-card border border-dark-border hover:border-gold/25 transition-all duration-300 hover:-translate-y-1"
-              style={{ animationDelay: `${i * 0.15}s` }}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {testimonials.map(review => (
+            <div key={review.id}
+              className="relative p-7 rounded-2xl bg-gradient-card border border-white/5 hover:border-gold-border transition-all duration-400 group"
             >
-              {/* Quote icon */}
-              <Quote className="absolute top-5 end-5 text-gold/15" size={36} />
+              <Quote className="absolute top-5 end-5 text-gold/10 group-hover:text-gold/20 transition-colors" size={40} />
 
-              {/* Stars */}
-              <div className="flex gap-0.5 mb-4">
-                {[...Array(5)].map((_, j) => (
-                  <Star
-                    key={j}
-                    size={14}
-                    className={j < testimonial.rating ? 'text-gold fill-gold' : 'text-white/15'}
+              <div className="flex gap-0.5 mb-5">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={14}
+                    className={i < review.rating ? 'text-gold fill-gold' : 'text-white/10'}
                   />
                 ))}
               </div>
 
-              {/* Comment */}
-              <p className="text-sm text-white/65 leading-relaxed mb-5">
-                {testimonial.comment[lang]}
+              <p className="text-sm text-white/55 leading-relaxed mb-6 relative">
+                &ldquo;{review.comment[lang]}&rdquo;
               </p>
 
-              {/* Author */}
-              <div className="flex items-center gap-3 pt-4 border-t border-dark-border">
-                <div className="w-9 h-9 rounded-full bg-gradient-gold flex items-center justify-center text-dark-deeper font-bold text-sm flex-shrink-0">
-                  {testimonial.name.charAt(0)}
+              <div className="flex items-center gap-3 pt-5 border-t border-ink-border">
+                <div className="w-9 h-9 rounded-full bg-gradient-gold flex items-center justify-center text-ink-deep font-bold text-sm shrink-0">
+                  {review.name.charAt(0)}
                 </div>
                 <div>
-                  <div className="font-medium text-white text-sm">{testimonial.name}</div>
-                  <div className="text-xs text-white/35">{testimonial.location[lang]}</div>
+                  <div className="text-white text-sm font-medium">{review.name}</div>
+                  <div className="text-white/30 text-2xs">{review.location[lang]}</div>
                 </div>
               </div>
             </div>
@@ -63,15 +53,13 @@ export default function Testimonials() {
 
         {/* Overall rating */}
         <div className="mt-12 text-center">
-          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-dark-card border border-dark-border">
+          <div className="inline-flex items-center gap-4 px-7 py-3.5 rounded-full bg-ink-card border border-ink-border">
             <div className="flex gap-0.5">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} size={16} className="text-gold fill-gold" />
-              ))}
+              {[...Array(5)].map((_, i) => <Star key={i} size={15} className="text-gold fill-gold" />)}
             </div>
-            <span className="text-white font-semibold text-sm">4.9</span>
-            <span className="text-white/40 text-sm">·</span>
-            <span className="text-white/50 text-sm">+500 {lang === 'ar' ? 'تقييم' : 'Reviews'}</span>
+            <span className="text-white font-semibold">4.9</span>
+            <span className="h-4 w-px bg-ink-border" />
+            <span className="text-white/35 text-sm">+{lang === 'ar' ? '٣٠٠' : '300'} {lang === 'ar' ? 'تقييم' : 'Reviews'}</span>
           </div>
         </div>
       </div>

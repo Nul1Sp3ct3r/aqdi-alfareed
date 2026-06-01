@@ -1,76 +1,78 @@
 'use client'
-
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowRight } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
-import { categories } from '@/data/products'
+import { products } from '@/data/products'
 import SectionTitle from '@/components/ui/SectionTitle'
 
 export default function FeaturedCategories() {
   const { t, lang, isRTL } = useLanguage()
 
-  return (
-    <section id="categories" className="section-padding bg-dark">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <SectionTitle
-          title={t.categories.title}
-          subtitle={t.categories.subtitle}
-          className="mb-12"
-        />
+  // Earrings (first 4) and necklaces (first 4) from real products
+  const earrings  = products.filter(p => p.category === 'earrings')
+  const necklaces = products.filter(p => p.category === 'necklaces').slice(0, 4)
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-          {categories.map((category, i) => (
-            <Link
-              key={category.id}
-              href={`/shop?category=${category.id}`}
-              className="group relative flex flex-col overflow-hidden rounded-2xl border border-dark-border hover:border-gold/30 transition-all duration-300 hover:-translate-y-1"
-              style={{ animationDelay: `${i * 0.1}s` }}
-            >
-              {/* Image */}
-              <div className="relative aspect-[3/4] overflow-hidden bg-dark-card">
-                <Image
-                  src={category.image}
-                  alt={category.name[lang]}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  sizes="(max-width: 768px) 50vw, 20vw"
-                />
-                {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-dark-deeper/90 via-dark-deeper/20 to-transparent" />
-
-                {/* Icon */}
-                <div className="absolute top-3 start-3 text-2xl filter drop-shadow-lg">
-                  {category.icon}
-                </div>
-
-                {/* Info */}
-                <div className="absolute bottom-0 start-0 end-0 p-4">
-                  <h3 className="font-semibold text-white text-base mb-0.5 group-hover:text-gold transition-colors">
-                    {category.name[lang]}
-                  </h3>
-                  <p className="text-xs text-white/50">
-                    {category.count} {t.categories.products}
-                  </p>
-                </div>
-              </div>
-            </Link>
-          ))}
+  const CollectionRow = ({
+    titleAr, titleEn, subtitleAr, subtitleEn, items, href,
+  }: {
+    titleAr: string; titleEn: string; subtitleAr: string; subtitleEn: string
+    items: typeof products; href: string
+  }) => (
+    <div className="mb-20 last:mb-0">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+        <div>
+          <span className="label-gold block mb-3">{isRTL ? subtitleAr : subtitleEn}</span>
+          <h2 className="display-serif text-3xl md:text-4xl text-white">{isRTL ? titleAr : titleEn}</h2>
+          <div className="h-px w-10 bg-gradient-gold-h rounded-full mt-3" />
         </div>
+        <Link href={href}
+          className="text-sm text-gold/60 hover:text-gold transition-colors font-medium shrink-0"
+        >
+          {t.categories.viewAll} →
+        </Link>
+      </div>
 
-        {/* View All */}
-        <div className="text-center mt-10">
-          <Link
-            href="/shop"
-            className="inline-flex items-center gap-2 text-gold hover:text-gold-light transition-colors text-sm font-medium group"
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {items.map(product => (
+          <Link key={product.id} href={`/product/${product.id}`}
+            className="group relative overflow-hidden rounded-2xl bg-ink-card border border-white/5 hover:border-gold-border transition-all duration-400 hover:-translate-y-1"
+            style={{ aspectRatio: '3/4' }}
           >
-            {t.categories.viewAll}
-            <ArrowRight
-              size={16}
-              className={`transition-transform group-hover:translate-x-1 ${isRTL ? 'rotate-180 group-hover:-translate-x-1 group-hover:translate-x-0' : ''}`}
+            <Image
+              src={product.images[0]}
+              alt={product.name[lang]}
+              fill
+              className="object-cover transition-transform duration-600 group-hover:scale-[1.07]"
+              sizes="(max-width: 768px) 50vw, 25vw"
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+            <div className="absolute bottom-0 inset-x-0 p-4">
+              <p className="text-white/85 text-sm font-medium leading-snug">{product.name[lang]}</p>
+              <p className="text-gold text-sm font-bold mt-1">{product.price.toLocaleString()} <span className="text-2xs text-white/40">{t.common.sar}</span></p>
+            </div>
           </Link>
-        </div>
+        ))}
+      </div>
+    </div>
+  )
+
+  return (
+    <section className="section-y-lg bg-ink relative">
+      <div className="absolute inset-x-0 top-0 h-px gold-rule" />
+
+      <div className="wrap">
+        <CollectionRow
+          titleAr="الأقراط"       titleEn="Earrings Collection"
+          subtitleAr="التشكيلة"   subtitleEn="Collection"
+          items={earrings}
+          href="/shop?category=earrings"
+        />
+        <CollectionRow
+          titleAr="العقود"        titleEn="Necklaces Collection"
+          subtitleAr="التشكيلة"   subtitleEn="Collection"
+          items={necklaces}
+          href="/shop?category=necklaces"
+        />
       </div>
     </section>
   )

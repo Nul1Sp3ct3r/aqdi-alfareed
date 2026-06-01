@@ -2,28 +2,22 @@ import { ReactNode } from 'react'
 
 interface BadgeProps {
   children: ReactNode
-  variant?: 'gold' | 'silver' | 'new' | 'bestseller' | 'sale' | 'dark'
-  size?: 'sm' | 'md'
+  variant?: 'gold' | 'silver' | 'new' | 'bestseller' | 'sale' | 'ink'
   className?: string
 }
 
-export default function Badge({ children, variant = 'gold', size = 'sm', className = '' }: BadgeProps) {
-  const variants = {
-    gold: 'bg-gold/15 text-gold border border-gold/30',
-    silver: 'bg-silver/15 text-silver border border-silver/30',
-    new: 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30',
-    bestseller: 'bg-amber-500/15 text-amber-400 border border-amber-500/30',
-    sale: 'bg-red-500/15 text-red-400 border border-red-500/30',
-    dark: 'bg-dark-card text-white/60 border border-dark-border',
-  }
-
-  const sizes = {
-    sm: 'text-xs px-2 py-0.5 rounded-full font-medium tracking-wide',
-    md: 'text-sm px-3 py-1 rounded-full font-semibold tracking-wide',
+export default function Badge({ children, variant = 'gold', className = '' }: BadgeProps) {
+  const variants: Record<string, string> = {
+    gold:       'bg-gold/10 text-gold border border-gold/25',
+    silver:     'bg-silver/10 text-silver border border-silver/25',
+    new:        'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
+    bestseller: 'bg-amber-500/10 text-amber-400 border border-amber-500/20',
+    sale:       'bg-red-500/10 text-red-400 border border-red-500/20',
+    ink:        'bg-ink-lifted text-white/50 border border-ink-border',
   }
 
   return (
-    <span className={`inline-flex items-center ${variants[variant]} ${sizes[size]} ${className}`}>
+    <span className={`badge ${variants[variant]} ${className}`}>
       {children}
     </span>
   )

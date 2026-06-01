@@ -1,30 +1,17 @@
 'use client'
-
 import { Product } from '@/types'
 import { useLanguage } from '@/context/LanguageContext'
 import ProductCard from './ProductCard'
-import SectionTitle from '@/components/ui/SectionTitle'
 
-interface RelatedProductsProps {
-  products: Product[]
-}
-
-export default function RelatedProducts({ products }: RelatedProductsProps) {
+export default function RelatedProducts({ products }: { products: Product[] }) {
   const { t } = useLanguage()
-
-  if (products.length === 0) return null
+  if (!products.length) return null
 
   return (
-    <section className="mt-20 pt-12 border-t border-dark-border">
-      <SectionTitle
-        title={t.product.relatedProducts}
-        center={true}
-        className="mb-10"
-      />
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {products.map(product => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+    <section className="mt-20 pt-12 border-t border-ink-border">
+      <h2 className="display-serif text-2xl text-white mb-10 text-center">{t.product.relatedProducts}</h2>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
+        {products.map(p => <ProductCard key={p.id} product={p} />)}
       </div>
     </section>
   )

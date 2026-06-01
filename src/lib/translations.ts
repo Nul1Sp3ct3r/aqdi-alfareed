@@ -121,6 +121,8 @@ const translations = {
       returnText: 'سياسة إرجاع مرنة خلال 14 يوماً من الاستلام',
       off: 'خصم',
       gallery: 'معرض الصور',
+      orderWhatsapp: 'اطلبي عبر واتساب',
+      addedToCart: 'تمت الإضافة',
     },
     shop: {
       title: 'المتجر',
@@ -436,6 +438,8 @@ const translations = {
       returnText: 'Flexible 14-day return policy from receipt',
       off: 'OFF',
       gallery: 'Gallery',
+      orderWhatsapp: 'Order on WhatsApp',
+      addedToCart: 'Added!',
     },
     shop: {
       title: 'Shop',
