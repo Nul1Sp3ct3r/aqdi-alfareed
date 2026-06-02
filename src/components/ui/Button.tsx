@@ -2,7 +2,7 @@
 import { ButtonHTMLAttributes, ReactNode } from 'react'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'gold' | 'outline-gold' | 'whatsapp' | 'ghost' | 'ink'
+  variant?: 'gold' | 'outline-gold' | 'dark' | 'whatsapp' | 'ghost'
   size?: 'sm' | 'md' | 'lg'
   fullWidth?: boolean
   children: ReactNode
@@ -12,14 +12,14 @@ export default function Button({
   variant = 'gold', size = 'md', fullWidth = false,
   children, className = '', disabled, ...props
 }: ButtonProps) {
-  const base = 'btn rounded-xl font-semibold tracking-wide disabled:opacity-40 disabled:cursor-not-allowed select-none'
+  const base = 'btn rounded font-semibold tracking-wide disabled:opacity-40 disabled:cursor-not-allowed'
 
   const variants: Record<string, string> = {
     'gold':         'btn-gold',
     'outline-gold': 'btn-outline-gold',
+    'dark':         'btn-dark',
     'whatsapp':     'btn-whatsapp',
-    'ghost':        'text-white/50 hover:text-white hover:bg-white/5 transition-colors',
-    'ink':          'bg-ink-lifted text-white/70 border border-ink-border hover:border-gold-border hover:text-gold transition-all',
+    'ghost':        'text-ink-muted hover:text-ink hover:bg-cream transition-colors',
   }
 
   const sizes: Record<string, string> = {

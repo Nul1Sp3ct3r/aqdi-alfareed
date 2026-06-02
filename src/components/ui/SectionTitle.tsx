@@ -16,15 +16,11 @@ export default function SectionTitle({ label, title, subtitle, center = true, li
 
   return (
     <div className={`${align} ${className}`}>
-      {label && (
-        <span className="label-gold block mb-4">{label}</span>
-      )}
-      <h2 className={`display-serif text-3xl md:text-4xl lg:text-5xl mb-4 ${light ? 'text-ink-deep' : 'text-white'}`}>
-        {title}
-      </h2>
-      <div className={`h-px w-12 bg-gradient-gold-h rounded-full mb-5 ${center ? 'mx-auto' : isRTL ? '' : ''}`} />
+      {label && <span className="label-luxury block mb-3">{label}</span>}
+      <h2 className={`section-title display-serif ${light ? 'text-white' : 'text-ink'}`}>{title}</h2>
+      <div className={`gold-rule-sm mt-3 mb-4 ${center ? 'mx-auto' : ''}`} />
       {subtitle && (
-        <p className={`text-base leading-relaxed max-w-xl ${center ? 'mx-auto' : ''} ${light ? 'text-ink-lifted' : 'text-white/50'}`}>
+        <p className={`text-sm leading-relaxed max-w-xl ${center ? 'mx-auto' : ''} ${light ? 'text-white/60' : 'text-ink-muted'}`}>
           {subtitle}
         </p>
       )}

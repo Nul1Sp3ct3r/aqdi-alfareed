@@ -2,22 +2,22 @@ import { ReactNode } from 'react'
 
 interface BadgeProps {
   children: ReactNode
-  variant?: 'gold' | 'silver' | 'new' | 'bestseller' | 'sale' | 'ink'
+  variant?: 'gold' | 'silver' | 'new' | 'bestseller' | 'sale' | 'outline'
   className?: string
 }
 
 export default function Badge({ children, variant = 'gold', className = '' }: BadgeProps) {
   const variants: Record<string, string> = {
-    gold:       'bg-gold/10 text-gold border border-gold/25',
-    silver:     'bg-silver/10 text-silver border border-silver/25',
-    new:        'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
-    bestseller: 'bg-amber-500/10 text-amber-400 border border-amber-500/20',
-    sale:       'bg-red-500/10 text-red-400 border border-red-500/20',
-    ink:        'bg-ink-lifted text-white/50 border border-ink-border',
+    gold:       'bg-gold text-white',
+    silver:     'bg-[#888] text-white',
+    new:        'bg-emerald-600 text-white',
+    bestseller: 'bg-amber-600 text-white',
+    sale:       'bg-red-600 text-white',
+    outline:    'border border-gold text-gold bg-transparent',
   }
 
   return (
-    <span className={`badge ${variants[variant]} ${className}`}>
+    <span className={`inline-flex items-center text-[10px] font-bold px-2 py-0.5 tracking-widest uppercase ${variants[variant]} ${className}`}>
       {children}
     </span>
   )

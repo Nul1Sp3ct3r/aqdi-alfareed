@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Playfair_Display, Inter, Tajawal } from 'next/font/google'
+import { Playfair_Display, Cormorant_Garamond, Inter, Tajawal } from 'next/font/google'
 import './globals.css'
 import Providers from './providers'
 
@@ -8,6 +8,13 @@ const playfair = Playfair_Display({
   variable: '--font-playfair',
   display: 'swap',
   weight: ['400', '500', '600', '700'],
+})
+
+const cormorant = Cormorant_Garamond({
+  subsets: ['latin'],
+  variable: '--font-cormorant',
+  display: 'swap',
+  weight: ['300', '400', '500', '600'],
 })
 
 const inter = Inter({
@@ -44,9 +51,9 @@ export default function RootLayout({
     <html
       lang="ar"
       dir="rtl"
-      className={`${playfair.variable} ${inter.variable} ${tajawal.variable}`}
+      className={`${playfair.variable} ${cormorant.variable} ${inter.variable} ${tajawal.variable}`}
     >
-      <body className="bg-dark-deeper text-white antialiased">
+      <body className="bg-cream text-ink antialiased">
         <Providers>
           {children}
         </Providers>

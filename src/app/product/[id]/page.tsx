@@ -1,13 +1,14 @@
 'use client'
 import { useState } from 'react'
 import { notFound } from 'next/navigation'
-import { ShoppingBag, Heart, MessageCircle, Shield, Truck, RotateCcw, ChevronDown, Star } from 'lucide-react'
+import {
+  ShoppingBag, Heart, MessageCircle,
+  Shield, Truck, RotateCcw, ChevronDown, Star,
+} from 'lucide-react'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import ProductGallery from '@/components/product/ProductGallery'
 import RelatedProducts from '@/components/product/RelatedProducts'
-import Badge from '@/components/ui/Badge'
-import Button from '@/components/ui/Button'
 import { useLanguage } from '@/context/LanguageContext'
 import { useCart } from '@/context/CartContext'
 import { getProductById, getRelatedProducts } from '@/data/products'
@@ -27,7 +28,8 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
   const related = getRelatedProducts(product)
   const discount = product.originalPrice
-    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) : null
+    ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
+    : null
 
   const handleAddToCart = () => {
     if (justAdded) return
@@ -38,16 +40,20 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
   const whatsappMsg = encodeURIComponent(
     lang === 'ar'
-      ? `السلام عليكم، أريد الطلب:\n${product.name.ar}\nالسعر: ${product.price} ر.س\n${typeof window !== 'undefined' ? window.location.href : ''}`
+      ? `السلام عليكم، أريد الطلب:\n${product.name.ar}\nالسعر: ${product.price} ر.س`
       : `Hello, I'd like to order:\n${product.name.en}\nPrice: ${product.price} SAR`
   )
   const whatsappUrl = `${siteConfig.whatsappUrl}?text=${whatsappMsg}`
 
   const accordionSections = [
     {
-      id: 'care', title: t.product.careInstructions,
-      content: product.careInstructions?.[lang]
-        ?? (lang === 'ar' ? 'نظّفي بقطعة قماش ناعمة جافة. تجنّبي الرطوبة والعطور.' : 'Clean with a soft dry cloth. Avoid moisture and perfumes.'),
+      id: 'care',
+      title: t.product.careInstructions,
+      content:
+        product.careInstructions?.[lang] ??
+        (lang === 'ar'
+          ? 'نظّفي بقطعة قماش ناعمة جافة. تجنّبي الرطوبة والعطور.'
+          : 'Clean with a soft dry cloth. Avoid moisture and perfumes.'),
     },
     { id: 'shipping', title: t.product.shippingInfo, content: t.product.shippingText },
     { id: 'returns',  title: t.product.returnPolicy,  content: t.product.returnText },
@@ -56,26 +62,60 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-ink-deep pt-20">
-        <div className="wrap py-10 md:py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20">
+      <main className="min-h-screen bg-white">
+        {/* Breadcrumb */}
+        <div className="bg-[#FAFAF8] border-b border-[#E8E2D6] py-3">
+          <div className="container text-xs text-ink-muted flex items-center gap-2 flex-wrap">
+            <span className="hover:text-gold transition-colors cursor-pointer">
+              {lang === 'ar' ? 'الرئيسية' : 'Home'}
+            </span>
+            <span className="text-[#ddd]">/</span>
+            <span className="hover:text-gold transition-colors cursor-pointer">
+              {lang === 'ar' ? 'المتجر' : 'Shop'}
+            </span>
+            <span className="text-[#ddd]">/</span>
+            <span className="text-ink font-medium truncate max-w-[200px]">
+              {product.name[lang]}
+            </span>
+          </div>
+        </div>
 
+        <div className="container py-10 md:py-14">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
             {/* Gallery */}
             <ProductGallery images={product.images} productName={product.name[lang]} />
 
-            {/* Info */}
-            <div className="flex flex-col">
-              {/* Badges */}
-              <div className="flex flex-wrap gap-2 mb-5">
-                <Badge variant={product.material === 'gold' ? 'gold' : 'silver'}>
+            {/* Product info */}
+            <div>
+              {/* Material + badges */}
+              <div className="flex flex-wrap items-center gap-2.5 mb-4">
+                <span
+                  className={`text-[11px] tracking-widest uppercase font-bold ${
+                    product.material === 'gold' ? 'text-gold' : 'text-[#666]'
+                  }`}
+                >
                   {product.material === 'gold' ? t.product.goldBadge : t.product.silverBadge} · 925
-                </Badge>
-                {product.isNew       && <Badge variant="new">{t.product.newBadge}</Badge>}
-                {product.isBestSeller && <Badge variant="bestseller">{t.product.bestSellerBadge}</Badge>}
+                </span>
+                {product.isNew && (
+                  <span className="bg-gold text-white text-[9px] font-bold px-2.5 py-0.5 tracking-wider uppercase">
+                    {t.product.newBadge}
+                  </span>
+                )}
+                {product.isBestSeller && (
+                  <span className="bg-[#7a5c10] text-white text-[9px] font-bold px-2.5 py-0.5 tracking-wider uppercase">
+                    {t.product.bestSellerBadge}
+                  </span>
+                )}
               </div>
 
               {/* Name */}
-              <h1 className="display-serif text-3xl md:text-4xl text-white leading-tight mb-4">
+              <h1
+                className={`text-ink leading-tight mb-4
+                  ${lang === 'ar'
+                    ? 'display-arabic text-[1.9rem] md:text-[2.3rem] font-bold'
+                    : 'display-serif text-[1.9rem] md:text-[2.3rem]'
+                  }`}
+              >
                 {product.name[lang]}
               </h1>
 
@@ -84,130 +124,193 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                 <div className="flex items-center gap-2 mb-5">
                   <div className="flex gap-0.5">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={14} className={i < Math.floor(product.rating!) ? 'text-gold fill-gold' : 'text-white/15'} />
+                      <Star
+                        key={i}
+                        size={13}
+                        className={
+                          i < Math.floor(product.rating!)
+                            ? 'text-gold fill-gold'
+                            : 'text-[#ddd] fill-[#ddd]'
+                        }
+                      />
                     ))}
                   </div>
-                  <span className="text-sm text-white/40">{product.rating} · {product.reviewCount} {t.product.reviews}</span>
+                  <span className="text-xs text-ink-muted">
+                    {product.rating} · {product.reviewCount} {t.product.reviews}
+                  </span>
                 </div>
               )}
 
               {/* Price */}
-              <div className="flex items-baseline gap-3 pb-7 mb-7 border-b border-ink-border">
-                <span className="text-4xl font-bold text-gold">{product.price.toLocaleString()}</span>
-                <span className="text-white/35 text-sm">{t.common.sar}</span>
+              <div className="flex items-baseline gap-3 pb-6 mb-6 border-b border-[#E8E2D6]">
+                <span className="text-[2rem] font-bold text-gold leading-none">
+                  {product.price.toLocaleString()}
+                </span>
+                <span className="text-ink-muted text-sm">{t.common.sar}</span>
                 {product.originalPrice && (
                   <>
-                    <span className="text-white/25 line-through text-lg">{product.originalPrice.toLocaleString()}</span>
-                    <Badge variant="sale">-{discount}%</Badge>
+                    <span className="text-ink-muted line-through text-lg">
+                      {product.originalPrice.toLocaleString()}
+                    </span>
+                    <span className="bg-red-600 text-white text-[9px] font-bold px-2 py-0.5">
+                      -{discount}%
+                    </span>
                   </>
                 )}
               </div>
 
-              {/* Short desc */}
-              <p className="text-white/50 text-sm leading-relaxed mb-7">
+              {/* Short description */}
+              <p className="text-ink-muted leading-relaxed mb-7 text-sm">
                 {product.shortDescription[lang]}
               </p>
 
-              {/* Size */}
+              {/* Size selector */}
               {product.sizes && product.sizes.length > 0 && (
                 <div className="mb-7">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm font-medium text-white/60">{t.product.size}</span>
-                    {selectedSize && <span className="text-gold text-sm font-semibold">{selectedSize}</span>}
+                  <div className="flex justify-between mb-3">
+                    <span className="text-sm font-semibold text-ink">{t.product.size}</span>
+                    {selectedSize && (
+                      <span className="text-gold text-sm font-semibold">{selectedSize}</span>
+                    )}
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {product.sizes.map(s => (
-                      <button key={s} onClick={() => setSelectedSize(s)}
-                        className={`w-11 h-11 rounded-xl text-sm font-medium border transition-all duration-200
+                      <button
+                        key={s}
+                        onClick={() => setSelectedSize(s)}
+                        className={`w-11 h-11 border text-sm font-medium transition-all duration-200
                           ${selectedSize === s
-                            ? 'bg-gold text-ink-deep border-gold'
-                            : 'bg-ink-card border-ink-border text-white/50 hover:border-gold/40 hover:text-white'
+                            ? 'bg-gold text-white border-gold'
+                            : 'bg-white text-ink border-[#E8E2D6] hover:border-gold hover:text-gold'
                           }`}
-                      >{s}</button>
+                      >
+                        {s}
+                      </button>
                     ))}
                   </div>
                 </div>
               )}
 
-              {/* Qty */}
+              {/* Quantity */}
               <div className="mb-7">
-                <span className="text-sm font-medium text-white/60 block mb-3">{t.product.quantity}</span>
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center rounded-xl border border-ink-border overflow-hidden">
-                    <button onClick={() => setQty(q => Math.max(1, q - 1))}
-                      className="px-4 py-3 text-white/40 hover:text-white hover:bg-ink-lifted transition-colors text-lg">−</button>
-                    <span className="px-5 text-white font-medium min-w-[42px] text-center">{qty}</span>
-                    <button onClick={() => setQty(q => Math.min(product.stockCount ?? 99, q + 1))}
-                      className="px-4 py-3 text-white/40 hover:text-white hover:bg-ink-lifted transition-colors text-lg">+</button>
+                <span className="text-sm font-semibold text-ink block mb-3">
+                  {t.product.quantity}
+                </span>
+                <div className="flex items-center gap-5">
+                  <div className="flex items-center border border-[#E8E2D6]">
+                    <button
+                      onClick={() => setQty(q => Math.max(1, q - 1))}
+                      className="px-4 py-3 text-ink-muted hover:text-gold hover:bg-[#FAFAF8] transition-colors text-lg select-none"
+                    >
+                      −
+                    </button>
+                    <span className="px-5 text-ink font-semibold min-w-[44px] text-center border-x border-[#E8E2D6]">
+                      {qty}
+                    </span>
+                    <button
+                      onClick={() => setQty(q => Math.min(product.stockCount ?? 99, q + 1))}
+                      className="px-4 py-3 text-ink-muted hover:text-gold hover:bg-[#FAFAF8] transition-colors text-lg select-none"
+                    >
+                      +
+                    </button>
                   </div>
-                  <span className={`text-sm font-medium ${product.inStock ? 'text-emerald-400' : 'text-red-400'}`}>
+                  <span
+                    className={`text-sm font-semibold ${
+                      product.inStock ? 'text-emerald-600' : 'text-red-500'
+                    }`}
+                  >
                     {product.inStock ? `✓ ${t.product.inStock}` : t.product.outOfStock}
                   </span>
                 </div>
               </div>
 
-              {/* Actions */}
+              {/* CTA buttons */}
               <div className="flex gap-3 mb-4">
-                <Button variant="gold" size="lg" className="flex-1 gap-2" onClick={handleAddToCart} disabled={!product.inStock}>
-                  <ShoppingBag size={18} strokeWidth={1.5} />
-                  {justAdded ? t.product.addedToCart : t.product.addToCart}
-                </Button>
-                <button onClick={() => setWishlisted(w => !w)}
-                  className={`p-4 rounded-xl border transition-all duration-200
-                    ${wishlisted ? 'bg-red-500/15 border-red-500/40 text-red-400' : 'bg-ink-card border-ink-border text-white/30 hover:text-red-400 hover:border-red-400/30'}`}
+                <button
+                  onClick={handleAddToCart}
+                  disabled={!product.inStock}
+                  className={`btn flex-1 py-4 rounded-none tracking-wide text-sm gap-2 ${
+                    justAdded ? 'btn-dark' : 'btn-gold'
+                  }`}
+                >
+                  <ShoppingBag size={17} strokeWidth={1.5} />
+                  {justAdded
+                    ? lang === 'ar' ? '✓ تمت الإضافة' : '✓ Added!'
+                    : t.product.addToCart}
+                </button>
+                <button
+                  onClick={() => setWishlisted(w => !w)}
+                  className={`p-4 border transition-all rounded-none ${
+                    wishlisted
+                      ? 'bg-red-50 border-red-300 text-red-500'
+                      : 'bg-white border-[#E8E2D6] text-ink-muted hover:border-gold hover:text-gold'
+                  }`}
                 >
                   <Heart size={20} strokeWidth={1.5} fill={wishlisted ? 'currentColor' : 'none'} />
                 </button>
               </div>
 
-              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-                <Button variant="whatsapp" size="lg" fullWidth className="gap-2 mb-8">
-                  <MessageCircle size={18} strokeWidth={1.5} />
-                  {t.product.orderWhatsapp}
-                </Button>
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-whatsapp w-full py-4 rounded-none tracking-wide text-sm gap-2 mb-8 flex items-center justify-center"
+              >
+                <MessageCircle size={17} strokeWidth={1.5} />
+                {t.product.orderWhatsapp}
               </a>
 
-              {/* Trust icons */}
+              {/* Trust badges */}
               <div className="grid grid-cols-3 gap-3 mb-7">
                 {[
-                  { Icon: Shield, text: lang === 'ar' ? 'ضمان الأصالة' : 'Authentic' },
-                  { Icon: Truck,  text: lang === 'ar' ? 'توصيل مجاني' : 'Free Delivery' },
+                  { Icon: Shield,    text: lang === 'ar' ? 'ضمان الأصالة' : 'Authentic' },
+                  { Icon: Truck,     text: lang === 'ar' ? 'توصيل مجاني' : 'Free Shipping' },
                   { Icon: RotateCcw, text: lang === 'ar' ? 'إرجاع ١٤ يوم' : '14-Day Return' },
                 ].map(({ Icon, text }) => (
-                  <div key={text} className="flex flex-col items-center gap-2 p-3.5 bg-ink-card rounded-xl border border-ink-border text-center">
-                    <Icon size={17} className="text-gold" strokeWidth={1.5} />
-                    <span className="text-[11px] text-white/40 leading-tight">{text}</span>
+                  <div
+                    key={text}
+                    className="flex flex-col items-center gap-2 p-3.5 bg-[#FAFAF8] border border-[#E8E2D6] text-center"
+                  >
+                    <Icon size={16} className="text-gold" strokeWidth={1.5} />
+                    <span className="text-[11px] text-ink-muted leading-tight">{text}</span>
                   </div>
                 ))}
               </div>
 
               {/* Product meta */}
-              <div className="p-4 bg-ink-card rounded-xl border border-ink-border mb-7 space-y-2">
+              <div className="p-4 bg-[#FAFAF8] border border-[#E8E2D6] mb-7 space-y-2.5">
                 {[
                   { label: t.product.sku,      value: product.sku },
-                  { label: t.product.material, value: product.material === 'gold' ? t.product.goldBadge : t.product.silverBadge },
+                  { label: t.product.material, value: product.material },
                   { label: t.product.weight,   value: product.weight },
-                ].filter(r => r.value).map(({ label, value }) => (
-                  <div key={label} className="flex justify-between text-sm">
-                    <span className="text-white/30">{label}</span>
-                    <span className="text-white/60 font-medium">{value}</span>
-                  </div>
-                ))}
+                ]
+                  .filter(r => r.value)
+                  .map(({ label, value }) => (
+                    <div key={label} className="flex justify-between text-sm">
+                      <span className="text-ink-muted">{label}</span>
+                      <span className="text-ink font-semibold">{value}</span>
+                    </div>
+                  ))}
               </div>
 
               {/* Accordion */}
               <div className="space-y-2">
                 {accordionSections.map(s => (
-                  <div key={s.id} className="overflow-hidden rounded-xl border border-ink-border">
+                  <div key={s.id} className="overflow-hidden border border-[#E8E2D6]">
                     <button
                       onClick={() => setOpenSection(openSection === s.id ? null : s.id)}
-                      className="w-full flex items-center justify-between px-4 py-4 text-sm font-medium text-white/60 hover:text-white bg-ink-card transition-colors"
+                      className="w-full flex items-center justify-between px-4 py-4 text-sm font-semibold text-ink bg-white hover:bg-[#FAFAF8] transition-colors"
                     >
                       {s.title}
-                      <ChevronDown size={15} className={`text-white/30 transition-transform duration-200 ${openSection === s.id ? 'rotate-180' : ''}`} />
+                      <ChevronDown
+                        size={15}
+                        className={`text-ink-muted transition-transform duration-200 ${
+                          openSection === s.id ? 'rotate-180' : ''
+                        }`}
+                      />
                     </button>
                     {openSection === s.id && (
-                      <div className="px-4 py-4 text-sm text-white/40 leading-relaxed border-t border-ink-border bg-ink-deep">
+                      <div className="px-4 py-4 text-sm text-ink-muted leading-relaxed border-t border-[#E8E2D6] bg-[#FAFAF8]">
                         {s.content}
                       </div>
                     )}
@@ -218,9 +321,19 @@ export default function ProductPage({ params }: { params: { id: string } }) {
           </div>
 
           {/* Full description */}
-          <div className="mt-20 pt-12 border-t border-ink-border">
-            <h2 className="display-serif text-2xl text-white mb-4">{t.product.description}</h2>
-            <p className="text-white/45 leading-relaxed max-w-3xl">{product.description[lang]}</p>
+          <div className="mt-16 pt-10 border-t border-[#E8E2D6]">
+            <h2
+              className={`text-ink mb-4 ${
+                lang === 'ar'
+                  ? 'display-arabic text-xl font-bold'
+                  : 'display-serif text-2xl'
+              }`}
+            >
+              {t.product.description}
+            </h2>
+            <p className="text-ink-muted leading-relaxed max-w-3xl text-sm">
+              {product.description[lang]}
+            </p>
           </div>
 
           <RelatedProducts products={related} />

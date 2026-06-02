@@ -1,10 +1,11 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ShoppingBag, Menu, X, Globe } from 'lucide-react'
+import { ShoppingBag, Menu, X, Search, Globe } from 'lucide-react'
 import { useLanguage } from '@/context/LanguageContext'
 import { useCart } from '@/context/CartContext'
 import CartDrawer from './CartDrawer'
+import TopBar from './TopBar'
 
 export default function Navbar() {
   const { t, lang, setLang, isRTL } = useLanguage()
@@ -13,110 +14,159 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    const fn = () => setScrolled(window.scrollY > 10)
+    window.addEventListener('scroll', fn, { passive: true })
+    return () => window.removeEventListener('scroll', fn)
   }, [])
 
-  const links = [
-    { href: '/',                     label: t.nav.home },
-    { href: '/shop',                 label: t.nav.shop },
-    { href: '/shop?filter=new',      label: t.nav.newArrivals },
-    { href: '/shop?filter=bestsellers', label: t.nav.bestSellers },
-    { href: '/about',                label: t.nav.about },
-    { href: '/contact',              label: t.nav.contact },
+  // Split links for centered-logo desktop layout
+  const startLinks = [
+    { href: '/',       label: t.nav.home },
+    { href: '/shop',   label: t.nav.shop },
+    { href: '/about',  label: t.nav.about },
   ]
+  const endLinks = [
+    { href: '/shop?filter=bestsellers', label: t.nav.fineJewelry },
+    { href: '/#tips',                   label: t.nav.tips },
+    { href: '/contact',                 label: t.nav.contact },
+  ]
+  const allLinks = [...startLinks, ...endLinks]
+
+  const navLinkClass =
+    'text-[13px] text-ink-muted hover:text-ink transition-colors tracking-wide relative group font-medium whitespace-nowrap'
 
   return (
     <>
-      <header className={`fixed top-0 inset-x-0 z-40 transition-all duration-500
-        ${scrolled
-          ? 'bg-ink-deep/95 backdrop-blur-xl border-b border-ink-border shadow-[0_1px_0_rgba(212,175,55,0.12)]'
-          : 'bg-transparent'
-        }`}
+      <TopBar />
+
+      <header
+        className={`sticky top-0 z-40 transition-all duration-300 bg-white
+          ${scrolled ? 'shadow-[0_2px_24px_rgba(0,0,0,0.08)]' : 'border-b border-[#E8E2D6]'}`}
       >
-        {/* Top accent line */}
-        {!scrolled && <div className="absolute top-0 inset-x-0 h-px bg-gradient-gold-h opacity-30" />}
+        <div className="container">
+          {/* ── Desktop: 3-column centered-logo ─────────────── */}
+          <div
+            className="hidden lg:grid items-center h-[68px]"
+            style={{ gridTemplateColumns: '1fr auto 1fr' }}
+          >
+            {/* Start nav */}
+            <nav className="flex items-center gap-7 justify-start">
+              {startLinks.map(l => (
+                <Link key={l.href + l.label} href={l.href} className={navLinkClass}>
+                  {l.label}
+                  <span className="absolute -bottom-0.5 inset-x-0 h-[1.5px] bg-gold scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center" />
+                </Link>
+              ))}
+            </nav>
 
-        <div className="wrap flex items-center justify-between h-[72px]">
-          {/* Logo */}
-          <Link href="/" className="flex flex-col group shrink-0">
-            <span className={`text-lg md:text-xl font-display font-light tracking-[0.12em] text-gradient-gold leading-none ${isRTL ? '' : 'font-serif'}`}>
-              {isRTL ? 'عقدي الفريد' : 'Aqdi Alfareed'}
-            </span>
-            <span className="text-2xs tracking-[0.35em] text-white/25 uppercase mt-0.5 font-light">
-              {isRTL ? 'Aqdi Alfareed' : 'عقدي الفريد'}
-            </span>
-          </Link>
+            {/* Center logo */}
+            <Link href="/" className="flex flex-col items-center px-10 group">
+              <span className="text-[22px] font-display font-light tracking-[0.14em] text-gradient-gold leading-none">
+                {isRTL ? 'عقدي الفريد' : 'Aqdi Alfareed'}
+              </span>
+              <span className="text-[8px] tracking-[0.35em] text-ink-faint uppercase font-light mt-0.5">
+                {isRTL ? 'Aqdi Alfareed' : 'عقدي الفريد'}
+              </span>
+            </Link>
 
-          {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-8">
-            {links.map(link => (
-              <Link key={link.href} href={link.href}
-                className="text-[13px] text-white/55 hover:text-gold transition-colors duration-300 tracking-wide relative group"
-              >
-                {link.label}
-                <span className="absolute -bottom-0.5 inset-x-0 h-px bg-gold scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center" />
-              </Link>
-            ))}
-          </nav>
+            {/* End nav + icons */}
+            <div className="flex items-center justify-end gap-7">
+              {endLinks.map(l => (
+                <Link key={l.href + l.label} href={l.href} className={navLinkClass}>
+                  {l.label}
+                  <span className="absolute -bottom-0.5 inset-x-0 h-[1.5px] bg-gold scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center" />
+                </Link>
+              ))}
 
-          {/* Actions */}
-          <div className="flex items-center gap-1">
-            {/* Language toggle */}
-            <button
-              onClick={() => setLang(lang === 'ar' ? 'en' : 'ar')}
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-ink-border text-white/40 hover:text-gold hover:border-gold-border transition-all text-[11px] tracking-[0.2em] font-medium"
-            >
-              <Globe size={12} />
-              {lang === 'ar' ? 'EN' : 'AR'}
-            </button>
+              <div className="flex items-center gap-0.5 ms-2 border-s border-[#E8E2D6] ps-5">
+                <Link
+                  href="/shop"
+                  className="p-2 text-ink-muted hover:text-gold transition-colors rounded-full"
+                  aria-label="Search"
+                >
+                  <Search size={18} strokeWidth={1.5} />
+                </Link>
+                <button
+                  onClick={openCart}
+                  className="relative p-2 text-ink-muted hover:text-gold transition-colors rounded-full"
+                  aria-label={t.nav.cart}
+                >
+                  <ShoppingBag size={18} strokeWidth={1.5} />
+                  {itemCount > 0 && (
+                    <span className="absolute top-1 end-1 w-4 h-4 bg-gold text-white text-[9px] font-bold rounded-full flex items-center justify-center leading-none">
+                      {itemCount > 9 ? '9+' : itemCount}
+                    </span>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
 
-            {/* Cart */}
-            <button
-              onClick={openCart}
-              className="relative p-2.5 text-white/50 hover:text-gold transition-colors rounded-full hover:bg-gold-subtle"
-              aria-label={t.nav.cart}
-            >
-              <ShoppingBag size={19} strokeWidth={1.5} />
-              {itemCount > 0 && (
-                <span className="absolute top-1 end-1 w-4 h-4 bg-gold text-ink-deep text-[9px] font-bold rounded-full flex items-center justify-center leading-none">
-                  {itemCount > 9 ? '9+' : itemCount}
-                </span>
-              )}
-            </button>
-
-            {/* Mobile toggle */}
+          {/* ── Mobile bar ────────────────────────────────── */}
+          <div className="flex lg:hidden items-center justify-between h-16">
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="lg:hidden p-2.5 text-white/50 hover:text-gold transition-colors rounded-full"
+              className="p-2 text-ink-muted hover:text-ink transition-colors"
+              aria-label="Menu"
             >
-              {mobileOpen ? <X size={20} strokeWidth={1.5} /> : <Menu size={20} strokeWidth={1.5} />}
+              {mobileOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
+
+            <Link href="/" className="flex flex-col items-center">
+              <span className="text-xl font-display font-light tracking-[0.14em] text-gradient-gold leading-none">
+                {isRTL ? 'عقدي الفريد' : 'Aqdi Alfareed'}
+              </span>
+            </Link>
+
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => setLang(lang === 'ar' ? 'en' : 'ar')}
+                className="flex items-center gap-1 px-2 py-1.5 text-[11px] text-ink-muted hover:text-gold transition-colors rounded font-medium tracking-wider"
+              >
+                <Globe size={13} />
+                {lang === 'ar' ? 'EN' : 'AR'}
+              </button>
+              <button
+                onClick={openCart}
+                className="relative p-2 text-ink-muted hover:text-gold transition-colors"
+                aria-label={t.nav.cart}
+              >
+                <ShoppingBag size={19} strokeWidth={1.5} />
+                {itemCount > 0 && (
+                  <span className="absolute top-1 end-1 w-4 h-4 bg-gold text-white text-[9px] font-bold rounded-full flex items-center justify-center leading-none">
+                    {itemCount > 9 ? '9+' : itemCount}
+                  </span>
+                )}
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Mobile menu */}
+        {/* Mobile drawer menu */}
         {mobileOpen && (
-          <div className="lg:hidden bg-ink-deep/98 backdrop-blur-xl border-t border-ink-border animate-fade-in">
-            <nav className="wrap py-6 flex flex-col gap-1">
-              {links.map(link => (
-                <Link key={link.href} href={link.href}
+          <div className="lg:hidden bg-white border-t border-[#E8E2D6] animate-fade-in shadow-lg">
+            <nav className="container py-5 flex flex-col gap-0.5">
+              {allLinks.map(l => (
+                <Link
+                  key={l.href + l.label}
+                  href={l.href}
                   onClick={() => setMobileOpen(false)}
-                  className="py-3 px-4 text-white/60 hover:text-gold hover:bg-gold-subtle rounded-xl text-sm transition-all"
+                  className="py-3.5 px-4 text-ink-mid hover:text-gold hover:bg-cream rounded-lg text-sm transition-all font-medium"
                 >
-                  {link.label}
+                  {l.label}
                 </Link>
               ))}
-              <div className="mt-4 pt-4 border-t border-ink-border flex gap-3">
+              <div className="mt-3 pt-3 border-t border-[#E8E2D6] flex gap-3">
                 <button
                   onClick={() => { setLang(lang === 'ar' ? 'en' : 'ar'); setMobileOpen(false) }}
-                  className="flex-1 py-2.5 text-xs text-white/40 border border-ink-border rounded-xl hover:border-gold-border hover:text-gold transition-all tracking-widest"
+                  className="flex-1 py-2.5 text-xs text-ink-muted border border-[#E8E2D6] rounded-lg hover:border-gold hover:text-gold transition-all tracking-wider"
                 >
                   {lang === 'ar' ? 'English' : 'العربية'}
                 </button>
-                <Link href="/admin" onClick={() => setMobileOpen(false)}
-                  className="flex-1 py-2.5 text-xs text-center text-gold/50 border border-ink-border rounded-xl hover:border-gold-border hover:text-gold transition-all"
+                <Link
+                  href="/admin"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex-1 py-2.5 text-xs text-center text-gold border border-gold/30 rounded-lg hover:border-gold hover:bg-gold/5 transition-all"
                 >
                   {t.nav.admin}
                 </Link>

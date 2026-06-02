@@ -1,11 +1,11 @@
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
-import HeroSection from '@/components/home/HeroSection'
-import NewArrivals from '@/components/home/NewArrivals'
-import FeaturedCategories from '@/components/home/FeaturedCategories'
+import HeroSlider from '@/components/home/HeroSlider'
+import LatestProducts from '@/components/home/LatestProducts'
+import CategoryCircles from '@/components/home/CategoryCircles'
+import CollectionBanner from '@/components/home/CollectionBanner'
 import BestSellers from '@/components/home/BestSellers'
-import WhyChooseUs from '@/components/home/WhyChooseUs'
-import Testimonials from '@/components/home/Testimonials'
+import TipsSection from '@/components/home/TipsSection'
 import InstagramGallery from '@/components/home/InstagramGallery'
 
 export default function HomePage() {
@@ -13,12 +13,12 @@ export default function HomePage() {
     <>
       <Navbar />
       <main>
-        <HeroSection />
-        <NewArrivals />
-        <FeaturedCategories />
+        <HeroSlider />
+        <LatestProducts />
+        <CategoryCircles />
+        <CollectionBanner />
         <BestSellers />
-        <WhyChooseUs />
-        <Testimonials />
+        <TipsSection />
         <InstagramGallery />
       </main>
       <Footer />
