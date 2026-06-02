@@ -24,12 +24,12 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
         className="relative overflow-hidden rounded-2xl bg-[#0a0a0a] group"
         style={{
           aspectRatio: '4/5',
-          border: '1px solid rgba(185,146,47,0.30)',
+          border: '1px solid rgba(139,94,60,0.45)',
           boxShadow: [
-            '0 8px 48px rgba(0,0,0,0.12)',
-            '0 1px 4px rgba(0,0,0,0.06)',
-            '0 0 0 4px rgba(201,164,76,0.06)',
-            '0 0 60px rgba(185,146,47,0.09)',
+            '0 12px 60px rgba(43,30,23,0.55)',
+            '0 2px 8px rgba(43,30,23,0.30)',
+            '0 0 0 4px rgba(139,94,60,0.06)',
+            '0 0 80px rgba(165,106,67,0.12)',
           ].join(', '),
         }}
       >
@@ -53,16 +53,19 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
         ))}
 
         {/* Zoom hint */}
-        <div className="absolute top-4 end-4 z-10 w-9 h-9 bg-white/85 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-          <ZoomIn size={14} className="text-[#333]" />
+        <div
+          className="absolute top-4 end-4 z-10 w-9 h-9 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+          style={{ background: 'rgba(247,241,232,0.88)' }}
+        >
+          <ZoomIn size={14} style={{ color: '#3D2A1A' }} />
         </div>
 
-        {/* Gold corner frame — on hover */}
+        {/* Copper corner frame — on hover */}
         <div className="absolute inset-4 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <span className="absolute top-0 start-0 w-8 h-8 border-t border-s border-[#C9A44C]/55" />
-          <span className="absolute top-0 end-0 w-8 h-8 border-t border-e border-[#C9A44C]/55" />
-          <span className="absolute bottom-0 start-0 w-8 h-8 border-b border-s border-[#C9A44C]/55" />
-          <span className="absolute bottom-0 end-0 w-8 h-8 border-b border-e border-[#C9A44C]/55" />
+          <span className="absolute top-0 start-0 w-8 h-8 border-t border-s" style={{ borderColor: 'rgba(165,106,67,0.60)' }} />
+          <span className="absolute top-0 end-0 w-8 h-8 border-t border-e" style={{ borderColor: 'rgba(165,106,67,0.60)' }} />
+          <span className="absolute bottom-0 start-0 w-8 h-8 border-b border-s" style={{ borderColor: 'rgba(165,106,67,0.60)' }} />
+          <span className="absolute bottom-0 end-0 w-8 h-8 border-b border-e" style={{ borderColor: 'rgba(165,106,67,0.60)' }} />
         </div>
 
         {/* Arrow buttons */}
@@ -71,14 +74,20 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
             <button
               onClick={isRTL ? next : prev}
               aria-label="Previous image"
-              className="absolute start-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-white hover:shadow-xl text-[#222]"
+              className="absolute start-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200 hover:shadow-xl"
+              style={{ background: 'rgba(247,241,232,0.90)', color: '#3D2A1A' }}
+              onMouseEnter={e => (e.currentTarget.style.background = 'rgba(247,241,232,1)')}
+              onMouseLeave={e => (e.currentTarget.style.background = 'rgba(247,241,232,0.90)')}
             >
               <ChevronLeft size={17} />
             </button>
             <button
               onClick={isRTL ? prev : next}
               aria-label="Next image"
-              className="absolute end-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-white hover:shadow-xl text-[#222]"
+              className="absolute end-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-200 hover:shadow-xl"
+              style={{ background: 'rgba(247,241,232,0.90)', color: '#3D2A1A' }}
+              onMouseEnter={e => (e.currentTarget.style.background = 'rgba(247,241,232,1)')}
+              onMouseLeave={e => (e.currentTarget.style.background = 'rgba(247,241,232,0.90)')}
             >
               <ChevronRight size={17} />
             </button>
@@ -95,8 +104,8 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
                 aria-label={`Image ${i + 1}`}
                 className={`rounded-full transition-all duration-300 ${
                   i === active
-                    ? 'w-5 h-[5px] bg-[#C9A44C]'
-                    : 'w-[5px] h-[5px] bg-white/45 hover:bg-white/70'
+                    ? 'w-5 h-[5px] bg-[#A56A43]'
+                    : 'w-[5px] h-[5px] bg-white/40 hover:bg-white/65'
                 }`}
               />
             ))}
@@ -112,11 +121,14 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
               key={i}
               onClick={() => setActive(i)}
               aria-label={`View image ${i + 1}`}
-              className={`relative w-[72px] h-[72px] flex-shrink-0 rounded-xl overflow-hidden border-2 transition-all duration-200 bg-[#0a0a0a]
-                ${active === i
-                  ? 'border-[#B9922F] shadow-[0_0_0_3px_rgba(185,146,47,0.18)]'
-                  : 'border-[#E0CFA0] opacity-65 hover:opacity-100 hover:border-[#B9922F]/55'
-                }`}
+              className={`relative w-[72px] h-[72px] flex-shrink-0 rounded-xl overflow-hidden border-2 transition-all duration-200 bg-[#0a0a0a]`}
+              style={
+                active === i
+                  ? { borderColor: '#8B5E3C', boxShadow: '0 0 0 3px rgba(139,94,60,0.22)' }
+                  : { borderColor: 'rgba(139,94,60,0.38)', opacity: 0.65 }
+              }
+              onMouseEnter={e => { if (active !== i) e.currentTarget.style.opacity = '1' }}
+              onMouseLeave={e => { if (active !== i) e.currentTarget.style.opacity = '0.65' }}
             >
               <Image
                 src={img}

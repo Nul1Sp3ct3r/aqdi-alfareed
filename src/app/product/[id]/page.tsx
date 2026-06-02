@@ -16,35 +16,50 @@ import { useCart } from '@/context/CartContext'
 import { getProductById, getRelatedProducts } from '@/data/products'
 import { siteConfig } from '@/lib/config'
 
-/* ─── palette constants ─────────────────────────────────── */
-// Card surfaces that sit on the champagne page background
-const C = {
-  card:        'bg-white',
-  cardBorder:  'border border-[#E0CFA0]',
-  cardShadow:  'shadow-[0_4px_24px_rgba(185,146,47,0.09),0_1px_3px_rgba(185,146,47,0.06)]',
-  innerBg:     'bg-[#FBF6EC]',          // warm ivory for nested cells
-  innerBorder: 'border-[#E8D9B0]',
-  divideWarm:  'divide-[#EFE5C8]',
-  textMuted:   'text-[#6B6B6B]',
+/* ─── Dark-copper design tokens ──────────────────────────── */
+// Page bg:   espresso + copper gradient (dark)
+// Surfaces:  warm ivory cards floating on the dark bg
+// Accents:   burnished copper (#A56A43), dark copper (#8B5E3C)
+const T = {
+  // content card (floats on dark bg)
+  cardBg:      '#F7F1E8',
+  cardBorder:  'rgba(139,94,60,0.30)',
+  cardShadow:  '0 8px 48px rgba(43,30,23,0.45), 0 1px 4px rgba(43,30,23,0.22)',
+  // nested cells inside the card
+  innerBg:     '#F0E8DC',
+  innerBorder: 'rgba(139,94,60,0.22)',
+  // dividers
+  divider:     'rgba(139,94,60,0.18)',
+  // text
+  heading:     '#1A1A1A',
+  body:        '#3D2A1A',
+  muted:       '#7A5C42',
+  faint:       '#A08060',
+  // copper accents
+  copper:      '#A56A43',
+  copperDark:  '#8B5E3C',
+  // breadcrumb (on dark page bg)
+  bcText:      '#B8A090',
+  bcActive:    '#F7F1E8',
 } as const
 
 const categoryLabel: Record<string, { ar: string; en: string }> = {
-  necklaces: { ar: 'القلائد',         en: 'Necklaces'  },
-  earrings:  { ar: 'الحلقان',         en: 'Earrings'   },
-  rings:     { ar: 'الخواتم',         en: 'Rings'      },
-  bracelets: { ar: 'الأساور',         en: 'Bracelets'  },
-  giftSets:  { ar: 'أطقم الهدايا',    en: 'Gift Sets'  },
+  necklaces: { ar: 'القلائد',      en: 'Necklaces' },
+  earrings:  { ar: 'الحلقان',      en: 'Earrings'  },
+  rings:     { ar: 'الخواتم',      en: 'Rings'     },
+  bracelets: { ar: 'الأساور',      en: 'Bracelets' },
+  giftSets:  { ar: 'أطقم الهدايا', en: 'Gift Sets' },
 }
 
 export default function ProductPage({ params }: { params: { id: string } }) {
   const { t, lang } = useLanguage()
   const { addToCart } = useCart()
 
-  const [qty, setQty]               = useState(1)
+  const [qty, setQty]                   = useState(1)
   const [selectedSize, setSelectedSize] = useState('')
-  const [justAdded, setJustAdded]   = useState(false)
-  const [wishlisted, setWishlisted] = useState(false)
-  const [openSection, setOpenSection] = useState<string | null>('care')
+  const [justAdded, setJustAdded]       = useState(false)
+  const [wishlisted, setWishlisted]     = useState(false)
+  const [openSection, setOpenSection]   = useState<string | null>('care')
 
   const product  = getProductById(params.id)
   if (!product) notFound()
@@ -85,113 +100,149 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   ]
 
   const trustItems = [
-    { Icon: Truck,   labelAr: 'شحن سريع ومجاني',   labelEn: 'Free Fast Shipping' },
-    { Icon: Package, labelAr: 'تغليف فاخر',         labelEn: 'Luxury Packaging'   },
-    { Icon: Shield,  labelAr: 'ضمان الجودة',        labelEn: 'Quality Guarantee'  },
-    { Icon: Gift,    labelAr: 'إمكانية الإهداء',    labelEn: 'Gift-Ready'         },
+    { Icon: Truck,   labelAr: 'شحن سريع ومجاني', labelEn: 'Free Fast Shipping' },
+    { Icon: Package, labelAr: 'تغليف فاخر',       labelEn: 'Luxury Packaging'   },
+    { Icon: Shield,  labelAr: 'ضمان الجودة',      labelEn: 'Quality Guarantee'  },
+    { Icon: Gift,    labelAr: 'إمكانية الإهداء',  labelEn: 'Gift-Ready'         },
   ]
 
   const metaRows = [
-    { label: t.product.sku,      value: product.sku },
-    { label: t.product.material, value: lang === 'ar'
+    { label: t.product.sku, value: product.sku },
+    {
+      label: t.product.material,
+      value: lang === 'ar'
         ? (product.material === 'gold' ? 'ذهب · 18K' : 'فضة · 925')
-        : (product.material === 'gold' ? 'Gold · 18K' : 'Silver · 925') },
-    { label: t.product.weight,   value: product.weight },
-    { label: lang === 'ar' ? 'الفئة' : 'Category',
-      value: categoryLabel[product.category]?.[lang] ?? product.category },
+        : (product.material === 'gold' ? 'Gold · 18K' : 'Silver · 925'),
+    },
+    { label: t.product.weight, value: product.weight },
+    {
+      label: lang === 'ar' ? 'الفئة' : 'Category',
+      value: categoryLabel[product.category]?.[lang] ?? product.category,
+    },
   ].filter(r => r.value)
 
   return (
     <>
       <Navbar />
 
-      {/* ══════════════════════════════════════════════════════
-          MAIN — champagne / warm-gold gradient background
-      ══════════════════════════════════════════════════════ */}
+      {/* ═══════════════════════════════════════════════════════
+          MAIN — dark espresso / copper atmosphere background
+      ═══════════════════════════════════════════════════════ */}
       <main
         className="min-h-screen"
         style={{
-          background: 'linear-gradient(160deg, #F7F1E6 0%, #F3E9D5 45%, #EDE1CA 100%)',
+          background: [
+            'radial-gradient(ellipse 160% 120% at 65% 0%, rgba(110,75,51,0.28) 0%, transparent 55%)',
+            'linear-gradient(155deg, #2B1E17 0%, #3C2920 40%, #241810 100%)',
+          ].join(', '),
         }}
       >
 
-        {/* ── Breadcrumb bar ──────────────────────────────── */}
+        {/* ── Breadcrumb ────────────────────────────────────── */}
         <div
           className="border-b"
           style={{
-            background: 'rgba(201,164,76,0.12)',
-            borderBottomColor: 'rgba(185,146,47,0.20)',
+            background: 'rgba(255,255,255,0.04)',
+            borderBottomColor: 'rgba(139,94,60,0.30)',
           }}
         >
           <div className="container py-3.5">
-            <nav className="flex items-center gap-1.5 text-[11.5px] flex-wrap" style={{ color: '#8C7A5A' }}>
-              <Link href="/" className="hover:text-[#B9922F] transition-colors duration-150">
+            <nav className="flex items-center gap-1.5 text-[11.5px] flex-wrap" style={{ color: T.bcText }}>
+              <Link
+                href="/"
+                className="transition-colors duration-150"
+                style={{ color: T.bcText }}
+                onMouseEnter={e => (e.currentTarget.style.color = T.copper)}
+                onMouseLeave={e => (e.currentTarget.style.color = T.bcText)}
+              >
                 {lang === 'ar' ? 'الرئيسية' : 'Home'}
               </Link>
               <ChevronRight
                 size={11}
                 className={`flex-shrink-0 ${isRTL ? 'rotate-180' : ''}`}
-                style={{ color: '#C9A44C', opacity: 0.6 }}
+                style={{ color: T.copper, opacity: 0.55 }}
               />
-              <Link href="/shop" className="hover:text-[#B9922F] transition-colors duration-150">
+              <Link
+                href="/shop"
+                className="transition-colors duration-150"
+                style={{ color: T.bcText }}
+                onMouseEnter={e => (e.currentTarget.style.color = T.copper)}
+                onMouseLeave={e => (e.currentTarget.style.color = T.bcText)}
+              >
                 {lang === 'ar' ? 'المتجر' : 'Shop'}
               </Link>
               <ChevronRight
                 size={11}
                 className={`flex-shrink-0 ${isRTL ? 'rotate-180' : ''}`}
-                style={{ color: '#C9A44C', opacity: 0.6 }}
+                style={{ color: T.copper, opacity: 0.55 }}
               />
-              <span className="font-semibold truncate max-w-[180px] sm:max-w-xs" style={{ color: '#3D2F1A' }}>
+              <span
+                className="font-semibold truncate max-w-[180px] sm:max-w-xs"
+                style={{ color: T.bcActive }}
+              >
                 {product.name[lang]}
               </span>
             </nav>
           </div>
         </div>
 
-        {/* ── Two-column layout ───────────────────────────── */}
+        {/* ── Two-column layout ─────────────────────────────── */}
         <div className="container py-10 md:py-14">
           <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-14 lg:items-start">
 
-            {/* ══ GALLERY COLUMN ══════════════════════════ */}
+            {/* ══ GALLERY ══════════════════════════════════ */}
             <ProductGallery images={product.images} productName={product.name[lang]} />
 
-            {/* ══ INFO COLUMN — floats as a white card ════ */}
+            {/* ══ INFO CARD — warm ivory on dark bg ════════ */}
             <div
-              className={`${C.card} rounded-2xl ${C.cardBorder} ${C.cardShadow} p-6 md:p-8 lg:sticky lg:top-24`}
+              className="rounded-2xl p-6 md:p-8 lg:sticky lg:top-24"
+              style={{
+                background: T.cardBg,
+                border: `1px solid ${T.cardBorder}`,
+                boxShadow: T.cardShadow,
+              }}
             >
 
               {/* ── Badge row ─────────────────────────────── */}
               <div className={`flex flex-wrap items-center gap-2 mb-5 ${isRTL ? 'justify-end' : ''}`}>
                 {/* Material pill */}
                 <span
-                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold tracking-[0.18em] uppercase
-                    ${product.material === 'gold'
-                      ? 'text-[#7A5E1A] border border-[#C9A44C]/40'
-                      : 'text-[#5A5A5A] border border-[#C0B090]/50'
-                    }`}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold tracking-[0.18em] uppercase"
                   style={{
                     background: product.material === 'gold'
-                      ? 'rgba(201,164,76,0.12)'
-                      : 'rgba(180,170,140,0.12)',
+                      ? 'rgba(139,94,60,0.12)'
+                      : 'rgba(122,92,66,0.10)',
+                    color:   product.material === 'gold' ? '#7A5030' : '#5A4535',
+                    border: `1px solid ${
+                      product.material === 'gold'
+                        ? 'rgba(139,94,60,0.35)'
+                        : 'rgba(100,80,60,0.30)'
+                    }`,
                   }}
                 >
                   <span
-                    className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
-                      product.material === 'gold' ? 'bg-[#B9922F]' : 'bg-[#909090]'
-                    }`}
+                    className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                    style={{ background: product.material === 'gold' ? T.copperDark : '#909090' }}
                   />
                   {product.material === 'gold' ? t.product.goldBadge : t.product.silverBadge} · 925
                 </span>
 
                 {product.isNew && (
-                  <span className="inline-flex items-center bg-[#B9922F] text-white text-[10px] font-bold px-3 py-1 rounded-full tracking-[0.12em] uppercase">
+                  <span
+                    className="inline-flex items-center text-white text-[10px] font-bold px-3 py-1 rounded-full tracking-[0.12em] uppercase"
+                    style={{ background: T.copperDark }}
+                  >
                     {t.product.newBadge}
                   </span>
                 )}
                 {product.isBestSeller && (
                   <span
-                    className="inline-flex items-center text-[#C9A44C] text-[10px] font-bold px-3 py-1 rounded-full tracking-[0.12em] uppercase border"
-                    style={{ background: '#1A1A1A', borderColor: 'rgba(201,164,76,0.35)' }}
+                    className="inline-flex items-center text-[10px] font-bold px-3 py-1 rounded-full tracking-[0.12em] uppercase"
+                    style={{
+                      background: '#1A1A1A',
+                      color: T.copper,
+                      border: `1px solid rgba(165,106,67,0.35)`,
+                    }}
                   >
                     ✦ {t.product.bestSellerBadge}
                   </span>
@@ -200,11 +251,12 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
               {/* ── Product name ──────────────────────────── */}
               <h1
-                className={`text-[#1A1A1A] leading-tight mb-4
+                className={`leading-tight mb-4
                   ${isRTL
                     ? 'display-arabic text-[1.85rem] md:text-[2.2rem] font-bold'
                     : 'display-serif text-[1.85rem] md:text-[2.2rem]'
                   }`}
+                style={{ color: T.heading }}
               >
                 {product.name[lang]}
               </h1>
@@ -217,17 +269,17 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                       <Star
                         key={i}
                         size={13}
-                        className={
+                        style={
                           i < Math.floor(product.rating!)
-                            ? 'text-[#B9922F] fill-[#B9922F]'
-                            : 'text-[#DDD0B0] fill-[#DDD0B0]'
+                            ? { color: T.copper,  fill: T.copper  }
+                            : { color: '#D0B898', fill: '#D0B898' }
                         }
                       />
                     ))}
                   </div>
-                  <span className="text-[12px] font-medium" style={{ color: '#8C7A5A' }}>
+                  <span className="text-[12px] font-medium" style={{ color: T.muted }}>
                     {product.rating}
-                    <span className="mx-1" style={{ color: '#C9A44C', opacity: 0.5 }}>·</span>
+                    <span className="mx-1" style={{ color: T.copper, opacity: 0.5 }}>·</span>
                     {product.reviewCount} {t.product.reviews}
                   </span>
                 </div>
@@ -236,17 +288,26 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               {/* ── Price ─────────────────────────────────── */}
               <div
                 className="flex flex-wrap items-baseline gap-2.5 mb-5 pb-5"
-                style={{ borderBottom: '1px solid rgba(185,146,47,0.22)' }}
+                style={{ borderBottom: `1px solid ${T.divider}` }}
               >
-                <span className="text-[2.1rem] font-bold text-[#B9922F] leading-none tabular-nums">
+                <span
+                  className="text-[2.1rem] font-bold leading-none tabular-nums"
+                  style={{ color: T.copperDark }}
+                >
                   {product.price.toLocaleString()}
                 </span>
-                <span className="text-[13px] font-semibold leading-none" style={{ color: 'rgba(185,146,47,0.65)' }}>
+                <span
+                  className="text-[13px] font-semibold leading-none"
+                  style={{ color: `${T.copperDark}99` }}
+                >
                   {t.common.sar}
                 </span>
                 {product.originalPrice && (
                   <>
-                    <span className="text-base leading-none tabular-nums ms-1" style={{ color: '#B0A090', textDecoration: 'line-through' }}>
+                    <span
+                      className="text-base leading-none tabular-nums ms-1"
+                      style={{ color: '#A89880', textDecoration: 'line-through' }}
+                    >
                       {product.originalPrice.toLocaleString()} {t.common.sar}
                     </span>
                     <span className="bg-[#D94040] text-white text-[9.5px] font-bold px-2.5 py-[3.5px] rounded-full leading-none">
@@ -259,7 +320,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               {/* ── Short description ─────────────────────── */}
               <p
                 className={`text-[14px] leading-[1.85] mb-6 ${isRTL ? 'text-right' : ''}`}
-                style={{ color: '#6B6B6B' }}
+                style={{ color: T.body }}
               >
                 {product.shortDescription[lang]}
               </p>
@@ -268,9 +329,19 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               {product.sizes && product.sizes.length > 0 && (
                 <div className="mb-6">
                   <div className={`flex items-center justify-between mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    <span className="text-[13px] font-bold text-[#2A2A2A] tracking-wide">{t.product.size}</span>
+                    <span
+                      className="text-[13px] font-bold tracking-wide"
+                      style={{ color: T.heading }}
+                    >
+                      {t.product.size}
+                    </span>
                     {selectedSize && (
-                      <span className="text-[13px] text-[#B9922F] font-bold">{selectedSize}</span>
+                      <span
+                        className="text-[13px] font-bold"
+                        style={{ color: T.copper }}
+                      >
+                        {selectedSize}
+                      </span>
                     )}
                   </div>
                   <div className="flex flex-wrap gap-2">
@@ -278,11 +349,33 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                       <button
                         key={s}
                         onClick={() => setSelectedSize(s)}
-                        className={`w-11 h-11 rounded-xl border text-sm font-semibold transition-all duration-200
-                          ${selectedSize === s
-                            ? 'bg-[#B9922F] text-white border-[#B9922F] shadow-[0_2px_12px_rgba(185,146,47,0.30)]'
-                            : 'bg-white text-[#333] border-[#E0CFA0] hover:border-[#B9922F] hover:text-[#B9922F]'
-                          }`}
+                        className="w-11 h-11 rounded-xl text-sm font-semibold transition-all duration-200"
+                        style={
+                          selectedSize === s
+                            ? {
+                                background: T.copperDark,
+                                color: '#F7F1E8',
+                                border: `1px solid ${T.copperDark}`,
+                                boxShadow: `0 2px 12px rgba(139,94,60,0.35)`,
+                              }
+                            : {
+                                background: T.innerBg,
+                                color: T.body,
+                                border: `1px solid ${T.innerBorder}`,
+                              }
+                        }
+                        onMouseEnter={e => {
+                          if (selectedSize !== s) {
+                            e.currentTarget.style.borderColor = T.copper
+                            e.currentTarget.style.color = T.copper
+                          }
+                        }}
+                        onMouseLeave={e => {
+                          if (selectedSize !== s) {
+                            e.currentTarget.style.borderColor = T.innerBorder
+                            e.currentTarget.style.color = T.body
+                          }
+                        }}
                       >
                         {s}
                       </button>
@@ -294,7 +387,12 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               {/* ── Quantity + stock ──────────────────────── */}
               <div className="mb-6">
                 <div className={`flex items-center justify-between mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <span className="text-[13px] font-bold text-[#2A2A2A] tracking-wide">{t.product.quantity}</span>
+                  <span
+                    className="text-[13px] font-bold tracking-wide"
+                    style={{ color: T.heading }}
+                  >
+                    {t.product.quantity}
+                  </span>
                   <span
                     className={`text-[12.5px] font-semibold flex items-center gap-1.5 ${
                       product.inStock ? 'text-emerald-600' : 'text-red-500'
@@ -306,30 +404,38 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                 </div>
 
                 <div
-                  className="inline-flex items-center rounded-xl overflow-hidden bg-white"
-                  style={{ border: '1px solid #E0CFA0', boxShadow: '0 1px 4px rgba(185,146,47,0.08)' }}
+                  className="inline-flex items-center rounded-xl overflow-hidden"
+                  style={{
+                    background: T.innerBg,
+                    border: `1px solid ${T.innerBorder}`,
+                    boxShadow: '0 1px 4px rgba(43,30,23,0.10)',
+                  }}
                 >
                   <button
                     onClick={() => setQty(q => Math.max(1, q - 1))}
-                    className="w-11 h-11 flex items-center justify-center text-xl select-none font-light transition-colors"
-                    style={{ color: '#8C7A5A' }}
-                    onMouseEnter={e => (e.currentTarget.style.color = '#B9922F')}
-                    onMouseLeave={e => (e.currentTarget.style.color = '#8C7A5A')}
+                    className="w-11 h-11 flex items-center justify-center text-xl select-none font-light transition-colors duration-150"
+                    style={{ color: T.muted }}
+                    onMouseEnter={e => (e.currentTarget.style.color = T.copper)}
+                    onMouseLeave={e => (e.currentTarget.style.color = T.muted)}
                   >
                     −
                   </button>
                   <span
-                    className="w-12 text-center text-[#1A1A1A] font-bold text-sm"
-                    style={{ borderLeft: '1px solid #E0CFA0', borderRight: '1px solid #E0CFA0' }}
+                    className="w-12 text-center font-bold text-sm"
+                    style={{
+                      color: T.heading,
+                      borderLeft:  `1px solid ${T.innerBorder}`,
+                      borderRight: `1px solid ${T.innerBorder}`,
+                    }}
                   >
                     {qty}
                   </span>
                   <button
                     onClick={() => setQty(q => Math.min(product.stockCount ?? 99, q + 1))}
-                    className="w-11 h-11 flex items-center justify-center text-xl select-none font-light transition-colors"
-                    style={{ color: '#8C7A5A' }}
-                    onMouseEnter={e => (e.currentTarget.style.color = '#B9922F')}
-                    onMouseLeave={e => (e.currentTarget.style.color = '#8C7A5A')}
+                    className="w-11 h-11 flex items-center justify-center text-xl select-none font-light transition-colors duration-150"
+                    style={{ color: T.muted }}
+                    onMouseEnter={e => (e.currentTarget.style.color = T.copper)}
+                    onMouseLeave={e => (e.currentTarget.style.color = T.muted)}
                   >
                     +
                   </button>
@@ -338,16 +444,30 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
               {/* ── CTA buttons ───────────────────────────── */}
               <div className="space-y-2.5 mb-7">
-                {/* Cart + Wishlist row */}
+                {/* Cart + wishlist */}
                 <div className="flex gap-2.5">
                   <button
                     onClick={handleAddToCart}
                     disabled={!product.inStock}
-                    className={`flex-1 flex items-center justify-center gap-2 py-[14px] rounded-xl text-[13px] font-bold tracking-[0.04em] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed
-                      ${justAdded
-                        ? 'bg-[#1A1A1A] text-white'
-                        : 'bg-[#B9922F] text-white hover:bg-[#C9A44C] hover:shadow-[0_6px_28px_rgba(185,146,47,0.38)]'
-                      }`}
+                    className="flex-1 flex items-center justify-center gap-2 py-[14px] rounded-xl text-[13px] font-bold tracking-[0.04em] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+                    style={
+                      justAdded
+                        ? { background: '#1A1A1A', color: '#F7F1E8' }
+                        : { background: T.copperDark, color: '#F7F1E8' }
+                    }
+                    onMouseEnter={e => {
+                      if (!justAdded && !product.inStock) return
+                      if (!justAdded) {
+                        e.currentTarget.style.background = T.copper
+                        e.currentTarget.style.boxShadow = `0 6px 28px rgba(139,94,60,0.45)`
+                      }
+                    }}
+                    onMouseLeave={e => {
+                      if (!justAdded) {
+                        e.currentTarget.style.background = T.copperDark
+                        e.currentTarget.style.boxShadow = 'none'
+                      }
+                    }}
                   >
                     <ShoppingBag size={17} strokeWidth={1.8} />
                     {justAdded
@@ -357,13 +477,29 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
                   <button
                     onClick={() => setWishlisted(w => !w)}
-                    className={`w-[50px] flex items-center justify-center rounded-xl border transition-all duration-200 flex-shrink-0
-                      ${wishlisted
-                        ? 'bg-rose-50 border-rose-200 text-rose-400'
-                        : 'bg-white text-[#B0956A] hover:text-[#B9922F] hover:border-[#C9A44C]'
-                      }`}
-                    style={{ borderColor: wishlisted ? undefined : '#E0CFA0' }}
+                    className="w-[50px] flex items-center justify-center rounded-xl transition-all duration-200 flex-shrink-0"
+                    style={
+                      wishlisted
+                        ? { background: '#FFF0EF', border: '1px solid #F5BFBA', color: '#E05050' }
+                        : {
+                            background: T.innerBg,
+                            border: `1px solid ${T.innerBorder}`,
+                            color: T.muted,
+                          }
+                    }
                     aria-label={t.product.addToWishlist}
+                    onMouseEnter={e => {
+                      if (!wishlisted) {
+                        e.currentTarget.style.borderColor = T.copper
+                        e.currentTarget.style.color = T.copper
+                      }
+                    }}
+                    onMouseLeave={e => {
+                      if (!wishlisted) {
+                        e.currentTarget.style.borderColor = T.innerBorder
+                        e.currentTarget.style.color = T.muted
+                      }
+                    }}
                   >
                     <Heart size={19} strokeWidth={1.6} fill={wishlisted ? 'currentColor' : 'none'} />
                   </button>
@@ -374,22 +510,21 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2.5 py-[14px] rounded-xl w-full text-[13px] font-bold tracking-[0.04em] transition-all duration-200 hover:text-white hover:shadow-[0_6px_24px_rgba(29,170,98,0.25)]"
-                  style={{
-                    border: '2px solid rgba(29,170,98,0.40)',
-                    color: '#1DAA62',
-                  }}
+                  className="flex items-center justify-center gap-2.5 py-[14px] rounded-xl w-full text-[13px] font-bold tracking-[0.04em] transition-all duration-200"
+                  style={{ border: '2px solid rgba(29,170,98,0.40)', color: '#1DAA62' }}
                   onMouseEnter={e => {
                     const el = e.currentTarget
                     el.style.background = '#1DAA62'
                     el.style.color = '#fff'
                     el.style.borderColor = '#1DAA62'
+                    el.style.boxShadow = '0 6px 24px rgba(29,170,98,0.25)'
                   }}
                   onMouseLeave={e => {
                     const el = e.currentTarget
                     el.style.background = ''
                     el.style.color = '#1DAA62'
                     el.style.borderColor = 'rgba(29,170,98,0.40)'
+                    el.style.boxShadow = 'none'
                   }}
                 >
                   <MessageCircle size={17} strokeWidth={1.8} />
@@ -404,51 +539,65 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                     key={labelEn}
                     className="flex flex-col items-center gap-2 p-3 rounded-xl text-center"
                     style={{
-                      background: '#FBF6EC',
-                      border: '1px solid #E8D9B0',
+                      background: T.innerBg,
+                      border: `1px solid ${T.innerBorder}`,
                     }}
                   >
                     <div
                       className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                      style={{ background: 'rgba(185,146,47,0.13)' }}
+                      style={{ background: 'rgba(139,94,60,0.14)' }}
                     >
-                      <Icon size={14} className="text-[#B9922F]" strokeWidth={1.6} />
+                      <Icon size={14} style={{ color: T.copperDark }} strokeWidth={1.6} />
                     </div>
-                    <span className="text-[10.5px] font-semibold leading-tight" style={{ color: '#6B5A3A' }}>
+                    <span
+                      className="text-[10.5px] font-semibold leading-tight"
+                      style={{ color: T.body }}
+                    >
                       {lang === 'ar' ? labelAr : labelEn}
                     </span>
                   </div>
                 ))}
               </div>
 
-              {/* ── Product specifications ────────────────── */}
+              {/* ── Specifications ────────────────────────── */}
               {metaRows.length > 0 && (
                 <div
                   className="rounded-2xl overflow-hidden mb-5"
-                  style={{ border: '1px solid #E0CFA0', boxShadow: '0 2px 12px rgba(185,146,47,0.07)' }}
+                  style={{
+                    border: `1px solid ${T.innerBorder}`,
+                    boxShadow: '0 2px 10px rgba(43,30,23,0.10)',
+                  }}
                 >
+                  {/* Header */}
                   <div
                     className="px-4 py-3"
-                    style={{ background: '#F8F0DC', borderBottom: '1px solid #E0CFA0' }}
+                    style={{
+                      background: '#E8D8C4',
+                      borderBottom: `1px solid rgba(139,94,60,0.22)`,
+                    }}
                   >
-                    <span className="text-[11px] font-bold text-[#B9922F] tracking-[0.2em] uppercase">
+                    <span
+                      className="text-[11px] font-bold tracking-[0.22em] uppercase"
+                      style={{ color: T.copperDark }}
+                    >
                       {lang === 'ar' ? 'مواصفات المنتج' : 'Product Specifications'}
                     </span>
                   </div>
-                  <div className="bg-white divide-y" style={{ '--tw-divide-opacity': 1, borderColor: '#EFE5C8' } as React.CSSProperties}>
+
+                  {/* Rows */}
+                  <div style={{ background: T.cardBg }}>
                     {metaRows.map(({ label, value }) => (
                       <div
                         key={label}
                         className="flex items-center justify-between px-4 py-3"
-                        style={{ borderBottom: '1px solid #EFE5C8' }}
+                        style={{ borderBottom: `1px solid ${T.divider}` }}
                       >
-                        <span className="text-[12.5px]" style={{ color: '#8C7A5A' }}>{label}</span>
-                        <span className="text-[12.5px] font-semibold text-[#1A1A1A]">{value}</span>
+                        <span className="text-[12.5px]" style={{ color: T.muted }}>{label}</span>
+                        <span className="text-[12.5px] font-semibold" style={{ color: T.heading }}>{value}</span>
                       </div>
                     ))}
-                    {/* Availability row */}
                     <div className="flex items-center justify-between px-4 py-3">
-                      <span className="text-[12.5px]" style={{ color: '#8C7A5A' }}>
+                      <span className="text-[12.5px]" style={{ color: T.muted }}>
                         {lang === 'ar' ? 'التوفر' : 'Availability'}
                       </span>
                       <span
@@ -467,32 +616,38 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               {/* ── Accordion ─────────────────────────────── */}
               <div
                 className="rounded-2xl overflow-hidden"
-                style={{ border: '1px solid #E0CFA0', boxShadow: '0 2px 12px rgba(185,146,47,0.07)' }}
+                style={{
+                  border: `1px solid ${T.innerBorder}`,
+                  boxShadow: '0 2px 10px rgba(43,30,23,0.10)',
+                }}
               >
                 {accordionSections.map(({ id, Icon, title, content }, idx) => (
                   <div
                     key={id}
-                    style={idx > 0 ? { borderTop: '1px solid #EFE5C8' } : undefined}
+                    style={idx > 0 ? { borderTop: `1px solid ${T.divider}` } : undefined}
                   >
                     <button
                       onClick={() => setOpenSection(openSection === id ? null : id)}
-                      className="w-full flex items-center justify-between px-4 py-4 bg-white transition-colors duration-150"
-                      onMouseEnter={e => (e.currentTarget.style.background = '#FBF6EC')}
-                      onMouseLeave={e => (e.currentTarget.style.background = '#fff')}
+                      className="w-full flex items-center justify-between px-4 py-4 transition-colors duration-150"
+                      style={{ background: T.cardBg }}
+                      onMouseEnter={e => (e.currentTarget.style.background = T.innerBg)}
+                      onMouseLeave={e => (e.currentTarget.style.background = T.cardBg)}
                     >
                       <div className="flex items-center gap-2.5">
                         <div
                           className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-                          style={{ background: 'rgba(185,146,47,0.13)' }}
+                          style={{ background: 'rgba(139,94,60,0.14)' }}
                         >
-                          <Icon size={13} className="text-[#B9922F]" strokeWidth={1.7} />
+                          <Icon size={13} style={{ color: T.copperDark }} strokeWidth={1.7} />
                         </div>
-                        <span className="text-[13px] font-bold text-[#1A1A1A]">{title}</span>
+                        <span className="text-[13px] font-bold" style={{ color: T.heading }}>
+                          {title}
+                        </span>
                       </div>
                       <ChevronDown
                         size={14}
                         className={`transition-transform duration-200 flex-shrink-0 ${openSection === id ? 'rotate-180' : ''}`}
-                        style={{ color: '#C9A44C', opacity: 0.7 }}
+                        style={{ color: T.copper, opacity: 0.7 }}
                       />
                     </button>
 
@@ -500,9 +655,9 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                       <div
                         className="px-4 pb-4 pt-2 text-[13px] leading-[1.9]"
                         style={{
-                          background: '#FBF6EC',
-                          borderTop: '1px solid #EFE5C8',
-                          color: '#6B5A3A',
+                          background: T.innerBg,
+                          borderTop: `1px solid ${T.divider}`,
+                          color: T.body,
                         }}
                       >
                         {content}
@@ -513,38 +668,43 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               </div>
 
             </div>
-            {/* ══ END INFO COLUMN ════════════════════════════ */}
+            {/* ══ END INFO CARD ══════════════════════════════ */}
 
           </div>
 
-          {/* ── Description — white card ─────────────────────── */}
+          {/* ── Description card ─────────────────────────────── */}
           <div
-            className="mt-14 rounded-2xl p-8 md:p-12 bg-white"
+            className="mt-14 rounded-2xl p-8 md:p-12"
             style={{
-              border: '1px solid #E0CFA0',
-              boxShadow: '0 2px 20px rgba(185,146,47,0.08)',
+              background: T.cardBg,
+              border: `1px solid ${T.cardBorder}`,
+              boxShadow: '0 4px 32px rgba(43,30,23,0.28)',
             }}
           >
             {/* Header */}
             <div className="flex items-center gap-5 mb-8">
               <div
                 className="h-px flex-1"
-                style={{ background: 'linear-gradient(to right, rgba(185,146,47,0.30), transparent)' }}
+                style={{ background: `linear-gradient(to right, rgba(139,94,60,0.40), transparent)` }}
               />
               <div className="text-center flex-shrink-0">
-                <span className="text-[11px] font-bold text-[#B9922F] tracking-[0.24em] uppercase block mb-2">
+                <span
+                  className="text-[11px] font-bold tracking-[0.24em] uppercase block mb-2"
+                  style={{ color: T.copper }}
+                >
                   {lang === 'ar' ? 'عن القطعة' : 'About This Piece'}
                 </span>
                 <h2
-                  className={`text-[1.5rem] md:text-[1.75rem] font-bold text-[#1A1A1A] leading-tight
+                  className={`text-[1.5rem] md:text-[1.75rem] font-bold leading-tight
                     ${isRTL ? 'display-arabic' : 'display-serif'}`}
+                  style={{ color: T.heading }}
                 >
                   {t.product.description}
                 </h2>
               </div>
               <div
                 className="h-px flex-1"
-                style={{ background: 'linear-gradient(to left, rgba(185,146,47,0.30), transparent)' }}
+                style={{ background: `linear-gradient(to left, rgba(139,94,60,0.40), transparent)` }}
               />
             </div>
 
@@ -552,22 +712,28 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             <div className="max-w-2xl mx-auto">
               <p
                 className={`text-[14.5px] leading-[2.1] mb-7 ${isRTL ? 'text-right' : ''}`}
-                style={{ color: '#5A5040' }}
+                style={{ color: T.body }}
               >
                 {product.description[lang]}
               </p>
 
-              {/* "Why you'll love it" */}
+              {/* "Why you'll love it" callout */}
               <div
                 className="rounded-2xl p-6"
-                style={{ background: '#FBF6EC', border: '1px solid #E8D9B0' }}
+                style={{
+                  background: T.innerBg,
+                  border: `1px solid ${T.innerBorder}`,
+                }}
               >
-                <p className="text-[11px] font-bold text-[#B9922F] tracking-[0.22em] uppercase mb-3">
+                <p
+                  className="text-[11px] font-bold tracking-[0.22em] uppercase mb-3"
+                  style={{ color: T.copperDark }}
+                >
                   {lang === 'ar' ? '✦ لماذا ستحبّينها؟' : "✦ Why You'll Love It"}
                 </p>
                 <p
                   className={`text-[13.5px] leading-[2] ${isRTL ? 'text-right' : ''}`}
-                  style={{ color: '#6B5A3A' }}
+                  style={{ color: T.body }}
                 >
                   {lang === 'ar'
                     ? `كل تفصيلة في هذه القطعة تعكس الذوق الرفيع والحرفية العالية. من ${
