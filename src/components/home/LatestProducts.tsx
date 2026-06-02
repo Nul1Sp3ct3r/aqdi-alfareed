@@ -12,34 +12,54 @@ export default function LatestProducts() {
   return (
     <section className="section-y bg-white">
       <div className="container">
-        {/* Section header */}
-        <div className={`flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12 ${isRTL ? 'text-right' : 'text-left'}`}>
+
+        {/* ── Section header ─────────────────────────── */}
+        <div
+          className={`flex flex-col sm:flex-row sm:items-end justify-between gap-5 mb-12
+            ${isRTL ? 'text-right' : 'text-left'}`}
+        >
           <div>
-            <span className="label-luxury block mb-3">{t.latest.label}</span>
-            <h2 className={`text-[1.85rem] md:text-[2.2rem] font-bold text-ink leading-tight
-              ${isRTL ? 'display-arabic' : 'display-serif'}`}>
+            {/* Eyebrow label */}
+            <div className="flex items-center gap-3 mb-3">
+              {!isRTL && <span className="h-px w-8 bg-[#B9922F] opacity-50 flex-shrink-0" />}
+              <span className="text-[11px] font-bold text-[#B9922F] tracking-[0.28em] uppercase">
+                {t.latest.label}
+              </span>
+              {isRTL && <span className="h-px w-8 bg-[#B9922F] opacity-50 flex-shrink-0" />}
+            </div>
+
+            {/* Main title */}
+            <h2
+              className={`text-[1.8rem] md:text-[2.15rem] font-bold text-[#050505] leading-tight
+                ${isRTL ? 'display-arabic' : 'display-serif'}`}
+            >
               {isRTL ? t.latest.title : t.latest.titleEn}
             </h2>
-            <div className="h-[2px] w-10 bg-gold mt-4 opacity-70" />
+
+            {/* Gold underline accent */}
+            <div className="h-[2.5px] w-10 rounded-full bg-[#B9922F] mt-4 opacity-65" />
           </div>
 
+          {/* View all link */}
           <Link
             href="/shop"
-            className={`inline-flex items-center gap-2 text-sm font-semibold text-gold hover:text-[#D4AF37] transition-colors shrink-0 group`}
+            className="group inline-flex items-center gap-2 text-[12.5px] font-bold text-[#B9922F] hover:text-[#D4AF37] transition-colors duration-200 shrink-0 pb-0.5 border-b border-[#B9922F]/30 hover:border-[#D4AF37]/50"
           >
             {t.latest.viewAll}
             {isRTL
-              ? <ArrowLeft size={15} className="transition-transform group-hover:-translate-x-1" />
-              : <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
+              ? <ArrowLeft size={13} className="transition-transform duration-200 group-hover:-translate-x-1" />
+              : <ArrowRight size={13} className="transition-transform duration-200 group-hover:translate-x-1" />
             }
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
+        {/* ── Product grid ───────────────────────────── */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
           {items.map((p, i) => (
             <ProductCard key={p.id} product={p} priority={i < 2} />
           ))}
         </div>
+
       </div>
     </section>
   )
