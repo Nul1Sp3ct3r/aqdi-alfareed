@@ -8,7 +8,7 @@ export default function RelatedProducts({ products }: { products: Product[] }) {
   if (!products.length) return null
 
   return (
-    <section className="mt-20 pt-14 border-t border-[#EDE8DF]">
+    <section className="mt-10 pt-12" style={{ borderTop: '1px solid rgba(185,146,47,0.22)' }}>
 
       {/* Section header */}
       <div className="text-center mb-12">

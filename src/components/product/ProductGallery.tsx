@@ -21,17 +21,25 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
 
       {/* ── Main image ─────────────────────────────────── */}
       <div
-        className="relative overflow-hidden rounded-2xl border border-[#EDE8DF] bg-[#0a0a0a] group"
+        className="relative overflow-hidden rounded-2xl bg-[#0a0a0a] group"
         style={{
           aspectRatio: '4/5',
-          boxShadow: '0 4px 32px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06)',
+          border: '1px solid rgba(185,146,47,0.30)',
+          boxShadow: [
+            '0 8px 48px rgba(0,0,0,0.12)',
+            '0 1px 4px rgba(0,0,0,0.06)',
+            '0 0 0 4px rgba(201,164,76,0.06)',
+            '0 0 60px rgba(185,146,47,0.09)',
+          ].join(', '),
         }}
       >
-        {/* Current image */}
+        {/* Image slides */}
         {images.map((img, i) => (
           <div
             key={img}
-            className={`absolute inset-0 transition-opacity duration-500 ${i === active ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+            className={`absolute inset-0 transition-opacity duration-500 ${
+              i === active ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            }`}
           >
             <Image
               src={img}
@@ -44,20 +52,20 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
           </div>
         ))}
 
-        {/* Hover zoom hint */}
+        {/* Zoom hint */}
         <div className="absolute top-4 end-4 z-10 w-9 h-9 bg-white/85 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
           <ZoomIn size={14} className="text-[#333]" />
         </div>
 
-        {/* Gold corner frame — shows on hover */}
-        <div className="absolute inset-4 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-400">
-          <span className="absolute top-0 start-0 w-8 h-8 border-t border-s border-[#D4AF37]/50" />
-          <span className="absolute top-0 end-0 w-8 h-8 border-t border-e border-[#D4AF37]/50" />
-          <span className="absolute bottom-0 start-0 w-8 h-8 border-b border-s border-[#D4AF37]/50" />
-          <span className="absolute bottom-0 end-0 w-8 h-8 border-b border-e border-[#D4AF37]/50" />
+        {/* Gold corner frame — on hover */}
+        <div className="absolute inset-4 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <span className="absolute top-0 start-0 w-8 h-8 border-t border-s border-[#C9A44C]/55" />
+          <span className="absolute top-0 end-0 w-8 h-8 border-t border-e border-[#C9A44C]/55" />
+          <span className="absolute bottom-0 start-0 w-8 h-8 border-b border-s border-[#C9A44C]/55" />
+          <span className="absolute bottom-0 end-0 w-8 h-8 border-b border-e border-[#C9A44C]/55" />
         </div>
 
-        {/* Arrow navigation */}
+        {/* Arrow buttons */}
         {images.length > 1 && (
           <>
             <button
@@ -87,7 +95,7 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
                 aria-label={`Image ${i + 1}`}
                 className={`rounded-full transition-all duration-300 ${
                   i === active
-                    ? 'w-5 h-[5px] bg-[#D4AF37]'
+                    ? 'w-5 h-[5px] bg-[#C9A44C]'
                     : 'w-[5px] h-[5px] bg-white/45 hover:bg-white/70'
                 }`}
               />
@@ -106,8 +114,8 @@ export default function ProductGallery({ images, productName }: ProductGalleryPr
               aria-label={`View image ${i + 1}`}
               className={`relative w-[72px] h-[72px] flex-shrink-0 rounded-xl overflow-hidden border-2 transition-all duration-200 bg-[#0a0a0a]
                 ${active === i
-                  ? 'border-[#B9922F] shadow-[0_0_0_3px_rgba(185,146,47,0.14)]'
-                  : 'border-[#E8E2D6] opacity-65 hover:opacity-100 hover:border-[#B9922F]/45'
+                  ? 'border-[#B9922F] shadow-[0_0_0_3px_rgba(185,146,47,0.18)]'
+                  : 'border-[#E0CFA0] opacity-65 hover:opacity-100 hover:border-[#B9922F]/55'
                 }`}
             >
               <Image
