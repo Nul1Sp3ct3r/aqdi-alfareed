@@ -7,7 +7,7 @@ export default function CollectionBanner() {
   const { t, isRTL } = useLanguage()
 
   return (
-    <section className="bg-white section-y">
+    <section className="bg-cream section-y">
       <div className="container">
         <div
           className="overflow-hidden grid grid-cols-1 md:grid-cols-2"

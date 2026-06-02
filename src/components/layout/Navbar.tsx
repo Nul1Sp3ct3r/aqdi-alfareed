@@ -41,7 +41,7 @@ export default function Navbar() {
 
       <header
         className={`sticky top-0 z-40 transition-all duration-300 bg-white
-          ${scrolled ? 'shadow-[0_2px_24px_rgba(0,0,0,0.08)]' : 'border-b border-[#E8E2D6]'}`}
+          ${scrolled ? 'shadow-[0_2px_24px_rgba(0,0,0,0.08)]' : 'border-b border-[#E8DEC8]'}`}
       >
         <div className="container">
           {/* ── Desktop: 3-column centered-logo ─────────────── */}
@@ -78,7 +78,7 @@ export default function Navbar() {
                 </Link>
               ))}
 
-              <div className="flex items-center gap-0.5 ms-2 border-s border-[#E8E2D6] ps-5">
+              <div className="flex items-center gap-0.5 ms-2 border-s border-[#E8DEC8] ps-5">
                 <Link
                   href="/shop"
                   className="p-2 text-ink-muted hover:text-gold transition-colors rounded-full"
@@ -144,7 +144,7 @@ export default function Navbar() {
 
         {/* Mobile drawer menu */}
         {mobileOpen && (
-          <div className="lg:hidden bg-white border-t border-[#E8E2D6] animate-fade-in shadow-lg">
+          <div className="lg:hidden bg-white border-t border-[#E8DEC8] animate-fade-in shadow-lg">
             <nav className="container py-5 flex flex-col gap-0.5">
               {allLinks.map(l => (
                 <Link
@@ -156,10 +156,10 @@ export default function Navbar() {
                   {l.label}
                 </Link>
               ))}
-              <div className="mt-3 pt-3 border-t border-[#E8E2D6] flex gap-3">
+              <div className="mt-3 pt-3 border-t border-[#E8DEC8] flex gap-3">
                 <button
                   onClick={() => { setLang(lang === 'ar' ? 'en' : 'ar'); setMobileOpen(false) }}
-                  className="flex-1 py-2.5 text-xs text-ink-muted border border-[#E8E2D6] rounded-lg hover:border-gold hover:text-gold transition-all tracking-wider"
+                  className="flex-1 py-2.5 text-xs text-ink-muted border border-[#E8DEC8] rounded-lg hover:border-gold hover:text-gold transition-all tracking-wider"
                 >
                   {lang === 'ar' ? 'English' : 'العربية'}
                 </button>

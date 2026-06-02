@@ -16,33 +16,6 @@ import { useCart } from '@/context/CartContext'
 import { getProductById, getRelatedProducts } from '@/data/products'
 import { siteConfig } from '@/lib/config'
 
-/* ─── Dark-copper design tokens ──────────────────────────── */
-// Page bg:   espresso + copper gradient (dark)
-// Surfaces:  warm ivory cards floating on the dark bg
-// Accents:   burnished copper (#A56A43), dark copper (#8B5E3C)
-const T = {
-  // content card (floats on dark bg)
-  cardBg:      '#F7F1E8',
-  cardBorder:  'rgba(139,94,60,0.30)',
-  cardShadow:  '0 8px 48px rgba(43,30,23,0.45), 0 1px 4px rgba(43,30,23,0.22)',
-  // nested cells inside the card
-  innerBg:     '#F0E8DC',
-  innerBorder: 'rgba(139,94,60,0.22)',
-  // dividers
-  divider:     'rgba(139,94,60,0.18)',
-  // text
-  heading:     '#1A1A1A',
-  body:        '#3D2A1A',
-  muted:       '#7A5C42',
-  faint:       '#A08060',
-  // copper accents
-  copper:      '#A56A43',
-  copperDark:  '#8B5E3C',
-  // breadcrumb (on dark page bg)
-  bcText:      '#B8A090',
-  bcActive:    '#F7F1E8',
-} as const
-
 const categoryLabel: Record<string, { ar: string; en: string }> = {
   necklaces: { ar: 'القلائد',      en: 'Necklaces' },
   earrings:  { ar: 'الحلقان',      en: 'Earrings'  },
@@ -86,14 +59,10 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
   const accordionSections = [
     {
-      id: 'care',
-      Icon: Sparkles,
-      title: t.product.careInstructions,
-      content:
-        product.careInstructions?.[lang] ??
-        (lang === 'ar'
-          ? 'نظّفي بقطعة قماش ناعمة جافة. تجنّبي الرطوبة والعطور.'
-          : 'Clean with a soft dry cloth. Avoid moisture and perfumes.'),
+      id: 'care', Icon: Sparkles, title: t.product.careInstructions,
+      content: product.careInstructions?.[lang] ?? (lang === 'ar'
+        ? 'نظّفي بقطعة قماش ناعمة جافة. تجنّبي الرطوبة والعطور.'
+        : 'Clean with a soft dry cloth. Avoid moisture and perfumes.'),
     },
     { id: 'shipping', Icon: Truck,     title: t.product.shippingInfo, content: t.product.shippingText },
     { id: 'returns',  Icon: RotateCcw, title: t.product.returnPolicy, content: t.product.returnText   },
@@ -107,275 +76,142 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   ]
 
   const metaRows = [
-    { label: t.product.sku, value: product.sku },
-    {
-      label: t.product.material,
-      value: lang === 'ar'
+    { label: t.product.sku,      value: product.sku },
+    { label: t.product.material, value: lang === 'ar'
         ? (product.material === 'gold' ? 'ذهب · 18K' : 'فضة · 925')
-        : (product.material === 'gold' ? 'Gold · 18K' : 'Silver · 925'),
-    },
-    { label: t.product.weight, value: product.weight },
-    {
-      label: lang === 'ar' ? 'الفئة' : 'Category',
-      value: categoryLabel[product.category]?.[lang] ?? product.category,
-    },
+        : (product.material === 'gold' ? 'Gold · 18K' : 'Silver · 925') },
+    { label: t.product.weight,   value: product.weight },
+    { label: lang === 'ar' ? 'الفئة' : 'Category',
+      value: categoryLabel[product.category]?.[lang] ?? product.category },
   ].filter(r => r.value)
 
   return (
     <>
       <Navbar />
-
-      {/* ═══════════════════════════════════════════════════════
-          MAIN — dark espresso / copper atmosphere background
-      ═══════════════════════════════════════════════════════ */}
-      <main
-        className="min-h-screen"
-        style={{
-          background: [
-            'radial-gradient(ellipse 160% 120% at 65% 0%, rgba(110,75,51,0.28) 0%, transparent 55%)',
-            'linear-gradient(155deg, #2B1E17 0%, #3C2920 40%, #241810 100%)',
-          ].join(', '),
-        }}
-      >
+      <main className="min-h-screen bg-cream">
 
         {/* ── Breadcrumb ────────────────────────────────────── */}
-        <div
-          className="border-b"
-          style={{
-            background: 'rgba(255,255,255,0.04)',
-            borderBottomColor: 'rgba(139,94,60,0.30)',
-          }}
-        >
+        <div className="bg-cream-warm border-b border-[#E8DEC8]">
           <div className="container py-3.5">
-            <nav className="flex items-center gap-1.5 text-[11.5px] flex-wrap" style={{ color: T.bcText }}>
-              <Link
-                href="/"
-                className="transition-colors duration-150"
-                style={{ color: T.bcText }}
-                onMouseEnter={e => (e.currentTarget.style.color = T.copper)}
-                onMouseLeave={e => (e.currentTarget.style.color = T.bcText)}
-              >
+            <nav className="flex items-center gap-1.5 text-[11.5px] text-ink-muted flex-wrap">
+              <Link href="/" className="hover:text-gold transition-colors duration-150">
                 {lang === 'ar' ? 'الرئيسية' : 'Home'}
               </Link>
-              <ChevronRight
-                size={11}
-                className={`flex-shrink-0 ${isRTL ? 'rotate-180' : ''}`}
-                style={{ color: T.copper, opacity: 0.55 }}
-              />
-              <Link
-                href="/shop"
-                className="transition-colors duration-150"
-                style={{ color: T.bcText }}
-                onMouseEnter={e => (e.currentTarget.style.color = T.copper)}
-                onMouseLeave={e => (e.currentTarget.style.color = T.bcText)}
-              >
+              <ChevronRight size={11} className={`text-[#C8BFA8] flex-shrink-0 ${isRTL ? 'rotate-180' : ''}`} />
+              <Link href="/shop" className="hover:text-gold transition-colors duration-150">
                 {lang === 'ar' ? 'المتجر' : 'Shop'}
               </Link>
-              <ChevronRight
-                size={11}
-                className={`flex-shrink-0 ${isRTL ? 'rotate-180' : ''}`}
-                style={{ color: T.copper, opacity: 0.55 }}
-              />
-              <span
-                className="font-semibold truncate max-w-[180px] sm:max-w-xs"
-                style={{ color: T.bcActive }}
-              >
+              <ChevronRight size={11} className={`text-[#C8BFA8] flex-shrink-0 ${isRTL ? 'rotate-180' : ''}`} />
+              <span className="text-ink font-medium truncate max-w-[180px] sm:max-w-xs">
                 {product.name[lang]}
               </span>
             </nav>
           </div>
         </div>
 
-        {/* ── Two-column layout ─────────────────────────────── */}
+        {/* ── Main two-column layout ────────────────────────── */}
         <div className="container py-10 md:py-14">
           <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-10 lg:gap-14 lg:items-start">
 
             {/* ══ GALLERY ══════════════════════════════════ */}
             <ProductGallery images={product.images} productName={product.name[lang]} />
 
-            {/* ══ INFO CARD — warm ivory on dark bg ════════ */}
-            <div
-              className="rounded-2xl p-6 md:p-8 lg:sticky lg:top-24"
-              style={{
-                background: T.cardBg,
-                border: `1px solid ${T.cardBorder}`,
-                boxShadow: T.cardShadow,
-              }}
-            >
+            {/* ══ INFO CARD ════════════════════════════════ */}
+            <div className="bg-white rounded-2xl border border-[#E8DEC8] shadow-card p-6 md:p-8 lg:sticky lg:top-24">
 
-              {/* ── Badge row ─────────────────────────────── */}
+              {/* Badge row */}
               <div className={`flex flex-wrap items-center gap-2 mb-5 ${isRTL ? 'justify-end' : ''}`}>
-                {/* Material pill */}
                 <span
-                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold tracking-[0.18em] uppercase"
-                  style={{
-                    background: product.material === 'gold'
-                      ? 'rgba(139,94,60,0.12)'
-                      : 'rgba(122,92,66,0.10)',
-                    color:   product.material === 'gold' ? '#7A5030' : '#5A4535',
-                    border: `1px solid ${
-                      product.material === 'gold'
-                        ? 'rgba(139,94,60,0.35)'
-                        : 'rgba(100,80,60,0.30)'
-                    }`,
-                  }}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold tracking-[0.16em] uppercase border
+                    ${product.material === 'gold'
+                      ? 'bg-gold/10 text-[#7A5E1A] border-gold/25'
+                      : 'bg-cream text-ink-muted border-[#E8DEC8]'
+                    }`}
                 >
-                  <span
-                    className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                    style={{ background: product.material === 'gold' ? T.copperDark : '#909090' }}
-                  />
+                  <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${product.material === 'gold' ? 'bg-gold' : 'bg-[#909090]'}`} />
                   {product.material === 'gold' ? t.product.goldBadge : t.product.silverBadge} · 925
                 </span>
-
                 {product.isNew && (
-                  <span
-                    className="inline-flex items-center text-white text-[10px] font-bold px-3 py-1 rounded-full tracking-[0.12em] uppercase"
-                    style={{ background: T.copperDark }}
-                  >
+                  <span className="inline-flex items-center bg-gold text-white text-[10px] font-bold px-3 py-1 rounded-full tracking-[0.12em] uppercase">
                     {t.product.newBadge}
                   </span>
                 )}
                 {product.isBestSeller && (
-                  <span
-                    className="inline-flex items-center text-[10px] font-bold px-3 py-1 rounded-full tracking-[0.12em] uppercase"
-                    style={{
-                      background: '#1A1A1A',
-                      color: T.copper,
-                      border: `1px solid rgba(165,106,67,0.35)`,
-                    }}
-                  >
+                  <span className="inline-flex items-center bg-jet-deep text-[#D8B45A] text-[10px] font-bold px-3 py-1 rounded-full tracking-[0.12em] uppercase border border-gold/20">
                     ✦ {t.product.bestSellerBadge}
                   </span>
                 )}
               </div>
 
-              {/* ── Product name ──────────────────────────── */}
+              {/* Product name */}
               <h1
-                className={`leading-tight mb-4
+                className={`text-ink leading-tight mb-4
                   ${isRTL
                     ? 'display-arabic text-[1.85rem] md:text-[2.2rem] font-bold'
                     : 'display-serif text-[1.85rem] md:text-[2.2rem]'
                   }`}
-                style={{ color: T.heading }}
               >
                 {product.name[lang]}
               </h1>
 
-              {/* ── Rating ────────────────────────────────── */}
+              {/* Rating */}
               {product.rating && (
                 <div className={`flex items-center gap-2.5 mb-5 ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
                   <div className="flex gap-0.5">
                     {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        size={13}
-                        style={
-                          i < Math.floor(product.rating!)
-                            ? { color: T.copper,  fill: T.copper  }
-                            : { color: '#D0B898', fill: '#D0B898' }
-                        }
+                      <Star key={i} size={13}
+                        className={i < Math.floor(product.rating!) ? 'text-gold fill-gold' : 'text-[#D8CEB8] fill-[#D8CEB8]'}
                       />
                     ))}
                   </div>
-                  <span className="text-[12px] font-medium" style={{ color: T.muted }}>
+                  <span className="text-[12px] text-ink-muted font-medium">
                     {product.rating}
-                    <span className="mx-1" style={{ color: T.copper, opacity: 0.5 }}>·</span>
+                    <span className="mx-1 text-[#C8BFA8]">·</span>
                     {product.reviewCount} {t.product.reviews}
                   </span>
                 </div>
               )}
 
-              {/* ── Price ─────────────────────────────────── */}
-              <div
-                className="flex flex-wrap items-baseline gap-2.5 mb-5 pb-5"
-                style={{ borderBottom: `1px solid ${T.divider}` }}
-              >
-                <span
-                  className="text-[2.1rem] font-bold leading-none tabular-nums"
-                  style={{ color: T.copperDark }}
-                >
+              {/* Price */}
+              <div className="flex flex-wrap items-baseline gap-2.5 mb-5 pb-5 border-b border-[#E8DEC8]">
+                <span className="text-[2.1rem] font-bold text-gold leading-none tabular-nums">
                   {product.price.toLocaleString()}
                 </span>
-                <span
-                  className="text-[13px] font-semibold leading-none"
-                  style={{ color: `${T.copperDark}99` }}
-                >
+                <span className="text-[13px] font-semibold text-gold/60 leading-none">
                   {t.common.sar}
                 </span>
                 {product.originalPrice && (
                   <>
-                    <span
-                      className="text-base leading-none tabular-nums ms-1"
-                      style={{ color: '#A89880', textDecoration: 'line-through' }}
-                    >
+                    <span className="text-base text-ink-muted line-through leading-none tabular-nums ms-1">
                       {product.originalPrice.toLocaleString()} {t.common.sar}
                     </span>
-                    <span className="bg-[#D94040] text-white text-[9.5px] font-bold px-2.5 py-[3.5px] rounded-full leading-none">
+                    <span className="bg-red-500 text-white text-[9.5px] font-bold px-2.5 py-[3.5px] rounded-full leading-none">
                       −{discount}%
                     </span>
                   </>
                 )}
               </div>
 
-              {/* ── Short description ─────────────────────── */}
-              <p
-                className={`text-[14px] leading-[1.85] mb-6 ${isRTL ? 'text-right' : ''}`}
-                style={{ color: T.body }}
-              >
+              {/* Short description */}
+              <p className={`text-ink-muted text-[14px] leading-[1.85] mb-6 ${isRTL ? 'text-right' : ''}`}>
                 {product.shortDescription[lang]}
               </p>
 
-              {/* ── Size selector ─────────────────────────── */}
+              {/* Size selector */}
               {product.sizes && product.sizes.length > 0 && (
                 <div className="mb-6">
                   <div className={`flex items-center justify-between mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    <span
-                      className="text-[13px] font-bold tracking-wide"
-                      style={{ color: T.heading }}
-                    >
-                      {t.product.size}
-                    </span>
-                    {selectedSize && (
-                      <span
-                        className="text-[13px] font-bold"
-                        style={{ color: T.copper }}
-                      >
-                        {selectedSize}
-                      </span>
-                    )}
+                    <span className="text-[13px] font-bold text-ink tracking-wide">{t.product.size}</span>
+                    {selectedSize && <span className="text-[13px] text-gold font-bold">{selectedSize}</span>}
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {product.sizes.map(s => (
-                      <button
-                        key={s}
-                        onClick={() => setSelectedSize(s)}
-                        className="w-11 h-11 rounded-xl text-sm font-semibold transition-all duration-200"
-                        style={
-                          selectedSize === s
-                            ? {
-                                background: T.copperDark,
-                                color: '#F7F1E8',
-                                border: `1px solid ${T.copperDark}`,
-                                boxShadow: `0 2px 12px rgba(139,94,60,0.35)`,
-                              }
-                            : {
-                                background: T.innerBg,
-                                color: T.body,
-                                border: `1px solid ${T.innerBorder}`,
-                              }
-                        }
-                        onMouseEnter={e => {
-                          if (selectedSize !== s) {
-                            e.currentTarget.style.borderColor = T.copper
-                            e.currentTarget.style.color = T.copper
-                          }
-                        }}
-                        onMouseLeave={e => {
-                          if (selectedSize !== s) {
-                            e.currentTarget.style.borderColor = T.innerBorder
-                            e.currentTarget.style.color = T.body
-                          }
-                        }}
+                      <button key={s} onClick={() => setSelectedSize(s)}
+                        className={`w-11 h-11 rounded-xl border text-sm font-semibold transition-all duration-200
+                          ${selectedSize === s
+                            ? 'bg-gold text-white border-gold shadow-gold-sm'
+                            : 'bg-white text-ink border-[#E8DEC8] hover:border-gold hover:text-gold'
+                          }`}
                       >
                         {s}
                       </button>
@@ -384,90 +220,39 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                 </div>
               )}
 
-              {/* ── Quantity + stock ──────────────────────── */}
+              {/* Quantity */}
               <div className="mb-6">
                 <div className={`flex items-center justify-between mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                  <span
-                    className="text-[13px] font-bold tracking-wide"
-                    style={{ color: T.heading }}
-                  >
-                    {t.product.quantity}
-                  </span>
-                  <span
-                    className={`text-[12.5px] font-semibold flex items-center gap-1.5 ${
-                      product.inStock ? 'text-emerald-600' : 'text-red-500'
-                    }`}
-                  >
+                  <span className="text-[13px] font-bold text-ink tracking-wide">{t.product.quantity}</span>
+                  <span className={`text-[12.5px] font-semibold flex items-center gap-1.5 ${product.inStock ? 'text-emerald-600' : 'text-red-500'}`}>
                     <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${product.inStock ? 'bg-emerald-500' : 'bg-red-500'}`} />
                     {product.inStock ? t.product.inStock : t.product.outOfStock}
                   </span>
                 </div>
-
-                <div
-                  className="inline-flex items-center rounded-xl overflow-hidden"
-                  style={{
-                    background: T.innerBg,
-                    border: `1px solid ${T.innerBorder}`,
-                    boxShadow: '0 1px 4px rgba(43,30,23,0.10)',
-                  }}
-                >
-                  <button
-                    onClick={() => setQty(q => Math.max(1, q - 1))}
-                    className="w-11 h-11 flex items-center justify-center text-xl select-none font-light transition-colors duration-150"
-                    style={{ color: T.muted }}
-                    onMouseEnter={e => (e.currentTarget.style.color = T.copper)}
-                    onMouseLeave={e => (e.currentTarget.style.color = T.muted)}
-                  >
+                <div className="inline-flex items-center rounded-xl overflow-hidden border border-[#E8DEC8] bg-white shadow-sm">
+                  <button onClick={() => setQty(q => Math.max(1, q - 1))}
+                    className="w-11 h-11 flex items-center justify-center text-xl select-none font-light text-ink-muted hover:text-gold hover:bg-cream transition-colors duration-150">
                     −
                   </button>
-                  <span
-                    className="w-12 text-center font-bold text-sm"
-                    style={{
-                      color: T.heading,
-                      borderLeft:  `1px solid ${T.innerBorder}`,
-                      borderRight: `1px solid ${T.innerBorder}`,
-                    }}
-                  >
+                  <span className="w-12 text-center text-ink font-bold text-sm border-x border-[#E8DEC8]">
                     {qty}
                   </span>
-                  <button
-                    onClick={() => setQty(q => Math.min(product.stockCount ?? 99, q + 1))}
-                    className="w-11 h-11 flex items-center justify-center text-xl select-none font-light transition-colors duration-150"
-                    style={{ color: T.muted }}
-                    onMouseEnter={e => (e.currentTarget.style.color = T.copper)}
-                    onMouseLeave={e => (e.currentTarget.style.color = T.muted)}
-                  >
+                  <button onClick={() => setQty(q => Math.min(product.stockCount ?? 99, q + 1))}
+                    className="w-11 h-11 flex items-center justify-center text-xl select-none font-light text-ink-muted hover:text-gold hover:bg-cream transition-colors duration-150">
                     +
                   </button>
                 </div>
               </div>
 
-              {/* ── CTA buttons ───────────────────────────── */}
+              {/* CTA buttons */}
               <div className="space-y-2.5 mb-7">
-                {/* Cart + wishlist */}
                 <div className="flex gap-2.5">
-                  <button
-                    onClick={handleAddToCart}
-                    disabled={!product.inStock}
-                    className="flex-1 flex items-center justify-center gap-2 py-[14px] rounded-xl text-[13px] font-bold tracking-[0.04em] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
-                    style={
-                      justAdded
-                        ? { background: '#1A1A1A', color: '#F7F1E8' }
-                        : { background: T.copperDark, color: '#F7F1E8' }
-                    }
-                    onMouseEnter={e => {
-                      if (!justAdded && !product.inStock) return
-                      if (!justAdded) {
-                        e.currentTarget.style.background = T.copper
-                        e.currentTarget.style.boxShadow = `0 6px 28px rgba(139,94,60,0.45)`
-                      }
-                    }}
-                    onMouseLeave={e => {
-                      if (!justAdded) {
-                        e.currentTarget.style.background = T.copperDark
-                        e.currentTarget.style.boxShadow = 'none'
-                      }
-                    }}
+                  <button onClick={handleAddToCart} disabled={!product.inStock}
+                    className={`flex-1 flex items-center justify-center gap-2 py-[14px] rounded-xl text-[13px] font-bold tracking-[0.04em] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed
+                      ${justAdded
+                        ? 'bg-jet-deep text-white'
+                        : 'bg-gold text-white hover:bg-gold-light hover:shadow-[0_6px_24px_rgba(185,146,47,0.30)]'
+                      }`}
                   >
                     <ShoppingBag size={17} strokeWidth={1.8} />
                     {justAdded
@@ -475,136 +260,60 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                       : t.product.addToCart}
                   </button>
 
-                  <button
-                    onClick={() => setWishlisted(w => !w)}
-                    className="w-[50px] flex items-center justify-center rounded-xl transition-all duration-200 flex-shrink-0"
-                    style={
-                      wishlisted
-                        ? { background: '#FFF0EF', border: '1px solid #F5BFBA', color: '#E05050' }
-                        : {
-                            background: T.innerBg,
-                            border: `1px solid ${T.innerBorder}`,
-                            color: T.muted,
-                          }
-                    }
+                  <button onClick={() => setWishlisted(w => !w)}
+                    className={`w-[50px] flex items-center justify-center rounded-xl border transition-all duration-200 flex-shrink-0
+                      ${wishlisted
+                        ? 'bg-rose-50 border-rose-200 text-rose-400'
+                        : 'bg-white border-[#E8DEC8] text-ink-muted hover:border-gold hover:text-gold hover:bg-cream'
+                      }`}
                     aria-label={t.product.addToWishlist}
-                    onMouseEnter={e => {
-                      if (!wishlisted) {
-                        e.currentTarget.style.borderColor = T.copper
-                        e.currentTarget.style.color = T.copper
-                      }
-                    }}
-                    onMouseLeave={e => {
-                      if (!wishlisted) {
-                        e.currentTarget.style.borderColor = T.innerBorder
-                        e.currentTarget.style.color = T.muted
-                      }
-                    }}
                   >
                     <Heart size={19} strokeWidth={1.6} fill={wishlisted ? 'currentColor' : 'none'} />
                   </button>
                 </div>
 
-                {/* WhatsApp */}
-                <a
-                  href={whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2.5 py-[14px] rounded-xl w-full text-[13px] font-bold tracking-[0.04em] transition-all duration-200"
-                  style={{ border: '2px solid rgba(29,170,98,0.40)', color: '#1DAA62' }}
-                  onMouseEnter={e => {
-                    const el = e.currentTarget
-                    el.style.background = '#1DAA62'
-                    el.style.color = '#fff'
-                    el.style.borderColor = '#1DAA62'
-                    el.style.boxShadow = '0 6px 24px rgba(29,170,98,0.25)'
-                  }}
-                  onMouseLeave={e => {
-                    const el = e.currentTarget
-                    el.style.background = ''
-                    el.style.color = '#1DAA62'
-                    el.style.borderColor = 'rgba(29,170,98,0.40)'
-                    el.style.boxShadow = 'none'
-                  }}
+                <a href={whatsappUrl} target="_blank" rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2.5 py-[14px] rounded-xl w-full text-[13px] font-bold tracking-[0.04em] border-2 border-[#25d366]/40 text-[#1daa58] transition-all duration-200 hover:bg-[#25d366] hover:text-white hover:border-[#25d366] hover:shadow-[0_6px_24px_rgba(37,211,102,0.22)]"
                 >
                   <MessageCircle size={17} strokeWidth={1.8} />
                   {t.product.orderWhatsapp}
                 </a>
               </div>
 
-              {/* ── Trust badges ──────────────────────────── */}
+              {/* Trust badges */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-7">
                 {trustItems.map(({ Icon, labelAr, labelEn }) => (
-                  <div
-                    key={labelEn}
-                    className="flex flex-col items-center gap-2 p-3 rounded-xl text-center"
-                    style={{
-                      background: T.innerBg,
-                      border: `1px solid ${T.innerBorder}`,
-                    }}
+                  <div key={labelEn}
+                    className="flex flex-col items-center gap-2 p-3 rounded-xl text-center bg-cream-warm border border-[#E8DEC8]"
                   >
-                    <div
-                      className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                      style={{ background: 'rgba(139,94,60,0.14)' }}
-                    >
-                      <Icon size={14} style={{ color: T.copperDark }} strokeWidth={1.6} />
+                    <div className="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center flex-shrink-0">
+                      <Icon size={14} className="text-gold" strokeWidth={1.6} />
                     </div>
-                    <span
-                      className="text-[10.5px] font-semibold leading-tight"
-                      style={{ color: T.body }}
-                    >
+                    <span className="text-[10.5px] font-semibold text-ink-muted leading-tight">
                       {lang === 'ar' ? labelAr : labelEn}
                     </span>
                   </div>
                 ))}
               </div>
 
-              {/* ── Specifications ────────────────────────── */}
+              {/* Specifications table */}
               {metaRows.length > 0 && (
-                <div
-                  className="rounded-2xl overflow-hidden mb-5"
-                  style={{
-                    border: `1px solid ${T.innerBorder}`,
-                    boxShadow: '0 2px 10px rgba(43,30,23,0.10)',
-                  }}
-                >
-                  {/* Header */}
-                  <div
-                    className="px-4 py-3"
-                    style={{
-                      background: '#E8D8C4',
-                      borderBottom: `1px solid rgba(139,94,60,0.22)`,
-                    }}
-                  >
-                    <span
-                      className="text-[11px] font-bold tracking-[0.22em] uppercase"
-                      style={{ color: T.copperDark }}
-                    >
+                <div className="rounded-2xl overflow-hidden border border-[#E8DEC8] mb-5 shadow-sm">
+                  <div className="px-4 py-3 bg-cream-warm border-b border-[#E8DEC8]">
+                    <span className="text-[11px] font-bold text-gold tracking-[0.20em] uppercase">
                       {lang === 'ar' ? 'مواصفات المنتج' : 'Product Specifications'}
                     </span>
                   </div>
-
-                  {/* Rows */}
-                  <div style={{ background: T.cardBg }}>
+                  <div className="bg-white">
                     {metaRows.map(({ label, value }) => (
-                      <div
-                        key={label}
-                        className="flex items-center justify-between px-4 py-3"
-                        style={{ borderBottom: `1px solid ${T.divider}` }}
-                      >
-                        <span className="text-[12.5px]" style={{ color: T.muted }}>{label}</span>
-                        <span className="text-[12.5px] font-semibold" style={{ color: T.heading }}>{value}</span>
+                      <div key={label} className="flex items-center justify-between px-4 py-3 border-b border-[#E8DEC8]">
+                        <span className="text-[12.5px] text-ink-muted">{label}</span>
+                        <span className="text-[12.5px] text-ink font-semibold">{value}</span>
                       </div>
                     ))}
                     <div className="flex items-center justify-between px-4 py-3">
-                      <span className="text-[12.5px]" style={{ color: T.muted }}>
-                        {lang === 'ar' ? 'التوفر' : 'Availability'}
-                      </span>
-                      <span
-                        className={`text-[12.5px] font-bold flex items-center gap-1.5 ${
-                          product.inStock ? 'text-emerald-600' : 'text-red-500'
-                        }`}
-                      >
+                      <span className="text-[12.5px] text-ink-muted">{lang === 'ar' ? 'التوفر' : 'Availability'}</span>
+                      <span className={`text-[12.5px] font-bold flex items-center gap-1.5 ${product.inStock ? 'text-emerald-600' : 'text-red-500'}`}>
                         <span className={`w-1.5 h-1.5 rounded-full ${product.inStock ? 'bg-emerald-500' : 'bg-red-500'}`} />
                         {product.inStock ? t.product.inStock : t.product.outOfStock}
                       </span>
@@ -613,53 +322,24 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                 </div>
               )}
 
-              {/* ── Accordion ─────────────────────────────── */}
-              <div
-                className="rounded-2xl overflow-hidden"
-                style={{
-                  border: `1px solid ${T.innerBorder}`,
-                  boxShadow: '0 2px 10px rgba(43,30,23,0.10)',
-                }}
-              >
+              {/* Accordion */}
+              <div className="rounded-2xl overflow-hidden border border-[#E8DEC8] shadow-sm">
                 {accordionSections.map(({ id, Icon, title, content }, idx) => (
-                  <div
-                    key={id}
-                    style={idx > 0 ? { borderTop: `1px solid ${T.divider}` } : undefined}
-                  >
+                  <div key={id} style={idx > 0 ? { borderTop: '1px solid #E8DEC8' } : undefined}>
                     <button
                       onClick={() => setOpenSection(openSection === id ? null : id)}
-                      className="w-full flex items-center justify-between px-4 py-4 transition-colors duration-150"
-                      style={{ background: T.cardBg }}
-                      onMouseEnter={e => (e.currentTarget.style.background = T.innerBg)}
-                      onMouseLeave={e => (e.currentTarget.style.background = T.cardBg)}
+                      className="w-full flex items-center justify-between px-4 py-4 bg-white hover:bg-cream-warm transition-colors duration-150"
                     >
                       <div className="flex items-center gap-2.5">
-                        <div
-                          className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-                          style={{ background: 'rgba(139,94,60,0.14)' }}
-                        >
-                          <Icon size={13} style={{ color: T.copperDark }} strokeWidth={1.7} />
+                        <div className="w-7 h-7 rounded-lg bg-gold/10 flex items-center justify-center flex-shrink-0">
+                          <Icon size={13} className="text-gold" strokeWidth={1.7} />
                         </div>
-                        <span className="text-[13px] font-bold" style={{ color: T.heading }}>
-                          {title}
-                        </span>
+                        <span className="text-[13px] font-bold text-ink">{title}</span>
                       </div>
-                      <ChevronDown
-                        size={14}
-                        className={`transition-transform duration-200 flex-shrink-0 ${openSection === id ? 'rotate-180' : ''}`}
-                        style={{ color: T.copper, opacity: 0.7 }}
-                      />
+                      <ChevronDown size={14} className={`text-ink-muted transition-transform duration-200 flex-shrink-0 ${openSection === id ? 'rotate-180' : ''}`} />
                     </button>
-
                     {openSection === id && (
-                      <div
-                        className="px-4 pb-4 pt-2 text-[13px] leading-[1.9]"
-                        style={{
-                          background: T.innerBg,
-                          borderTop: `1px solid ${T.divider}`,
-                          color: T.body,
-                        }}
-                      >
+                      <div className="px-4 pb-4 pt-2 text-[13px] text-ink-muted leading-[1.9] bg-cream-warm border-t border-[#E8DEC8]">
                         {content}
                       </div>
                     )}
@@ -668,92 +348,44 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               </div>
 
             </div>
-            {/* ══ END INFO CARD ══════════════════════════════ */}
+            {/* ══ END INFO CARD ═══════════════════════════════ */}
 
           </div>
 
-          {/* ── Description card ─────────────────────────────── */}
-          <div
-            className="mt-14 rounded-2xl p-8 md:p-12"
-            style={{
-              background: T.cardBg,
-              border: `1px solid ${T.cardBorder}`,
-              boxShadow: '0 4px 32px rgba(43,30,23,0.28)',
-            }}
-          >
-            {/* Header */}
+          {/* ── Description card ──────────────────────────────── */}
+          <div className="mt-14 rounded-2xl bg-white border border-[#E8DEC8] shadow-card p-8 md:p-12">
             <div className="flex items-center gap-5 mb-8">
-              <div
-                className="h-px flex-1"
-                style={{ background: `linear-gradient(to right, rgba(139,94,60,0.40), transparent)` }}
-              />
+              <div className="h-px flex-1" style={{ background: 'linear-gradient(to right, rgba(185,146,47,0.28), transparent)' }} />
               <div className="text-center flex-shrink-0">
-                <span
-                  className="text-[11px] font-bold tracking-[0.24em] uppercase block mb-2"
-                  style={{ color: T.copper }}
-                >
-                  {lang === 'ar' ? 'عن القطعة' : 'About This Piece'}
-                </span>
-                <h2
-                  className={`text-[1.5rem] md:text-[1.75rem] font-bold leading-tight
-                    ${isRTL ? 'display-arabic' : 'display-serif'}`}
-                  style={{ color: T.heading }}
-                >
+                <span className="label-luxury block mb-2">{lang === 'ar' ? 'عن القطعة' : 'About This Piece'}</span>
+                <h2 className={`text-[1.5rem] md:text-[1.75rem] font-bold text-ink leading-tight ${isRTL ? 'display-arabic' : 'display-serif'}`}>
                   {t.product.description}
                 </h2>
               </div>
-              <div
-                className="h-px flex-1"
-                style={{ background: `linear-gradient(to left, rgba(139,94,60,0.40), transparent)` }}
-              />
+              <div className="h-px flex-1" style={{ background: 'linear-gradient(to left, rgba(185,146,47,0.28), transparent)' }} />
             </div>
 
-            {/* Text */}
             <div className="max-w-2xl mx-auto">
-              <p
-                className={`text-[14.5px] leading-[2.1] mb-7 ${isRTL ? 'text-right' : ''}`}
-                style={{ color: T.body }}
-              >
+              <p className={`text-ink-muted text-[14.5px] leading-[2.1] mb-7 ${isRTL ? 'text-right' : ''}`}>
                 {product.description[lang]}
               </p>
-
-              {/* "Why you'll love it" callout */}
-              <div
-                className="rounded-2xl p-6"
-                style={{
-                  background: T.innerBg,
-                  border: `1px solid ${T.innerBorder}`,
-                }}
-              >
-                <p
-                  className="text-[11px] font-bold tracking-[0.22em] uppercase mb-3"
-                  style={{ color: T.copperDark }}
-                >
+              <div className="bg-cream-warm rounded-2xl border border-[#E8DEC8] p-6">
+                <p className="label-luxury mb-3">
                   {lang === 'ar' ? '✦ لماذا ستحبّينها؟' : "✦ Why You'll Love It"}
                 </p>
-                <p
-                  className={`text-[13.5px] leading-[2] ${isRTL ? 'text-right' : ''}`}
-                  style={{ color: T.body }}
-                >
+                <p className={`text-[13.5px] text-ink-muted leading-[2] ${isRTL ? 'text-right' : ''}`}>
                   {lang === 'ar'
-                    ? `كل تفصيلة في هذه القطعة تعكس الذوق الرفيع والحرفية العالية. من ${
-                        product.material === 'gold' ? 'الذهب الأصيل' : 'الفضة الخالصة 925'
-                      } — قطعة تُكملك وتبقى معكِ في كل مناسبة.`
-                    : `Every detail in this piece reflects refined taste and exceptional craftsmanship. Crafted from ${
-                        product.material === 'gold' ? 'authentic gold' : '925 sterling silver'
-                      } — a piece that completes you and stays with you in every occasion.`
+                    ? `كل تفصيلة في هذه القطعة تعكس الذوق الرفيع والحرفية العالية. من ${product.material === 'gold' ? 'الذهب الأصيل' : 'الفضة الخالصة 925'} — قطعة تُكملك وتبقى معكِ في كل مناسبة.`
+                    : `Every detail in this piece reflects refined taste and exceptional craftsmanship. Crafted from ${product.material === 'gold' ? 'authentic gold' : '925 sterling silver'} — a piece that completes you and stays with you in every occasion.`
                   }
                 </p>
               </div>
             </div>
           </div>
 
-          {/* ── Related products ─────────────────────────────── */}
           <RelatedProducts products={related} />
-
         </div>
       </main>
-
       <Footer />
     </>
   )

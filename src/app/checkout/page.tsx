@@ -116,9 +116,9 @@ export default function CheckoutPage() {
                       { id: 'cash' as const, label: t.checkout.cashOnDelivery, icon: Banknote },
                     ].map(({ id, label, icon: Icon }) => (
                       <label key={id} className={`flex items-center gap-4 p-4 border rounded-xl cursor-pointer transition-all
-                        ${payment === id ? 'border-gold bg-gold/5' : 'border-[#E8E2D6] bg-white hover:border-gold/40'}`}>
+                        ${payment === id ? 'border-gold bg-gold/5' : 'border-[#E8DEC8] bg-white hover:border-gold/40'}`}>
                         <input type="radio" name="payment" value={id} checked={payment === id} onChange={() => setPayment(id)} className="sr-only" />
-                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${payment === id ? 'border-gold' : 'border-[#ccc]'}`}>
+                        <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center shrink-0 ${payment === id ? 'border-gold' : 'border-[#C8BFA8]'}`}>
                           {payment === id && <div className="w-2 h-2 rounded-full bg-gold" />}
                         </div>
                         <Icon size={18} className={payment === id ? 'text-gold' : 'text-ink-muted'} />
@@ -132,7 +132,7 @@ export default function CheckoutPage() {
               {/* Summary */}
               <div>
                 <div className="sticky top-28">
-                  <div className="p-6 bg-white rounded-xl border border-[#E8E2D6] shadow-card">
+                  <div className="p-6 bg-white rounded-xl border border-[#E8DEC8] shadow-card">
                     <h2 className="font-semibold text-ink text-lg mb-5 display-serif">{t.checkout.orderSummary}</h2>
                     <div className="space-y-3 mb-5 max-h-60 overflow-y-auto no-scroll">
                       {items.map(item => (
@@ -148,10 +148,10 @@ export default function CheckoutPage() {
                         </div>
                       ))}
                     </div>
-                    <div className="space-y-2 pt-4 border-t border-[#E8E2D6] mb-5">
+                    <div className="space-y-2 pt-4 border-t border-[#E8DEC8] mb-5">
                       <div className="flex justify-between text-sm text-ink-muted"><span>{t.checkout.subtotal}</span><span>{subtotal.toLocaleString()} {t.common.sar}</span></div>
                       <div className="flex justify-between text-sm text-ink-muted"><span>{t.checkout.shipping}</span><span className="text-emerald-600 font-medium">{t.checkout.free}</span></div>
-                      <div className="flex justify-between font-bold text-base pt-2 border-t border-[#E8E2D6]">
+                      <div className="flex justify-between font-bold text-base pt-2 border-t border-[#E8DEC8]">
                         <span className="text-ink">{t.checkout.total}</span>
                         <span className="text-gold text-xl">{subtotal.toLocaleString()} {t.common.sar}</span>
                       </div>
@@ -179,8 +179,8 @@ export default function CheckoutPage() {
 
 function FormSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="p-6 bg-white rounded-xl border border-[#E8E2D6] shadow-card">
-      <h2 className="font-semibold text-ink text-base mb-5 pb-4 border-b border-[#E8E2D6] display-serif">{title}</h2>
+    <div className="p-6 bg-white rounded-xl border border-[#E8DEC8] shadow-card">
+      <h2 className="font-semibold text-ink text-base mb-5 pb-4 border-b border-[#E8DEC8] display-serif">{title}</h2>
       <div className="space-y-4">{children}</div>
     </div>
   )

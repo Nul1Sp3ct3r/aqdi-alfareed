@@ -4,46 +4,56 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Root Variables ─────────────────────────────── */
+/* ─── Brand palette variables ────────────────────────────── */
 :root {
-  --cream:        #FAFAF8;
-  --cream-warm:   #F5F0E8;
-  --border:       #E8E2D6;
-  --ink:          #050505;
-  --ink-mid:      #333333;
-  --ink-muted:    #666666;
-  --gold:         #B9922F;
-  --gold-light:   #D4AF37;
-  --jet:          #111111;
+  --background:    #FAF7F0;
+  --surface:       #FFFFFF;
+  --surface-warm:  #FCF8EF;
+  --text:          #151515;
+  --muted:         #6F6A61;
+  --gold:          #B9922F;
+  --gold-soft:     #D8B45A;
+  --copper:        #A56A43;
+  --border:        #E8DEC8;
+  --black:         #050505;
+
+  /* legacy aliases kept for component compatibility */
+  --cream:         #FAF7F0;
+  --cream-warm:    #FCF8EF;
+  --ink:           #151515;
+  --ink-mid:       #2A2A2A;
+  --ink-muted:     #6F6A61;
+  --gold-light:    #D8B45A;
+  --jet:           #111111;
 }
 
-/* ─── Base ───────────────────────────────────────── */
+/* ─── Base ───────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 
 body {
-  background-color: #fff;
-  color: var(--ink);
+  background-color: var(--background);
+  color: var(--text);
   font-family: 'Inter', system-ui, sans-serif;
   overflow-x: hidden;
 }
 html[lang="ar"] body { font-family: 'Tajawal', Arial, sans-serif; }
 
-/* ─── Scrollbar ──────────────────────────────────── */
+/* ─── Scrollbar ──────────────────────────────────────────── */
 ::-webkit-scrollbar          { width: 5px; }
-::-webkit-scrollbar-track    { background: #f0ebe2; }
-::-webkit-scrollbar-thumb    { background: #d4af37; border-radius: 10px; }
+::-webkit-scrollbar-track    { background: var(--surface-warm); }
+::-webkit-scrollbar-thumb    { background: var(--gold); border-radius: 10px; }
 
-/* ─── Layout Utilities ───────────────────────────── */
-.container        { max-width: 1280px; margin-inline: auto; padding-inline: 1.5rem; }
-.section-y        { padding-top: 4.5rem; padding-bottom: 4.5rem; }
-.section-y-lg     { padding-top: 6rem; padding-bottom: 6rem; }
+/* ─── Layout ─────────────────────────────────────────────── */
+.container      { max-width: 1280px; margin-inline: auto; padding-inline: 1.5rem; }
+.section-y      { padding-top: 4.5rem; padding-bottom: 4.5rem; }
+.section-y-lg   { padding-top: 6rem;   padding-bottom: 6rem;   }
 @media (max-width: 768px) {
-  .section-y    { padding-top: 3rem; padding-bottom: 3rem; }
-  .section-y-lg { padding-top: 4rem; padding-bottom: 4rem; }
+  .section-y    { padding-top: 3rem;   padding-bottom: 3rem;   }
+  .section-y-lg { padding-top: 4rem;   padding-bottom: 4rem;   }
 }
 
-/* ─── Typography ─────────────────────────────────── */
+/* ─── Typography ─────────────────────────────────────────── */
 .display-serif {
   font-family: 'Cormorant Garamond', 'Playfair Display', serif;
   font-weight: 400;
@@ -63,33 +73,21 @@ html[lang="ar"] body { font-family: 'Tajawal', Arial, sans-serif; }
   font-weight: 600;
 }
 .text-gradient-gold {
-  background: linear-gradient(135deg, #B9922F, #D4AF37 50%, #B9922F);
+  background: linear-gradient(135deg, #B9922F, #D8B45A 50%, #B9922F);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* ─── Gold rule ──────────────────────────────────── */
-.gold-rule     { height: 1px; background: var(--gold); opacity: 0.25; }
-.gold-rule-sm  { display: block; height: 2px; width: 40px; background: var(--gold); opacity: 0.7; }
+/* ─── Gold decorators ────────────────────────────────────── */
+.gold-rule     { height: 1px; background: var(--gold); opacity: 0.22; }
+.gold-rule-sm  { display: block; height: 2px; width: 40px; background: var(--gold); opacity: 0.65; border-radius: 2px; }
 
-/* ─── Section title ──────────────────────────────── */
-.section-title    { font-size: 1.85rem; font-weight: 700; color: var(--ink); line-height: 1.2; }
+/* ─── Section title ──────────────────────────────────────── */
+.section-title    { font-size: 1.85rem; font-weight: 700; color: var(--text); line-height: 1.2; }
 .section-title-lg { font-size: 2.4rem; }
 
-/* ─── Cards ──────────────────────────────────────── */
-.card-product {
-  background: #fff;
-  border: 1px solid var(--border);
-  overflow: hidden;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-}
-.card-product:hover {
-  box-shadow: 0 12px 48px rgba(0,0,0,0.10);
-  transform: translateY(-4px);
-}
-
-/* ─── Buttons ────────────────────────────────────── */
+/* ─── Buttons ────────────────────────────────────────────── */
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
   gap: 0.5rem; font-weight: 600; cursor: pointer; border: none; outline: none;
@@ -101,8 +99,8 @@ html[lang="ar"] body { font-family: 'Tajawal', Arial, sans-serif; }
   letter-spacing: 0.06em;
 }
 .btn-gold:hover:not(:disabled) {
-  background: var(--gold-light);
-  box-shadow: 0 6px 25px rgba(185,146,47,0.3);
+  background: var(--gold-soft);
+  box-shadow: 0 6px 24px rgba(185,146,47,0.28);
   transform: translateY(-1px);
 }
 .btn-outline-gold {
@@ -116,50 +114,66 @@ html[lang="ar"] body { font-family: 'Tajawal', Arial, sans-serif; }
   color: #fff;
 }
 .btn-dark {
-  background: var(--jet);
+  background: var(--black);
   color: #fff;
   letter-spacing: 0.05em;
 }
-.btn-dark:hover:not(:disabled) {
-  background: #222;
+.btn-dark:hover:not(:disabled) { background: #1a1a1a; }
+.btn-ghost {
+  background: transparent;
+  color: var(--muted);
 }
+.btn-ghost:hover { color: var(--text); }
 .btn-whatsapp {
   background: #25d366;
   color: #fff;
 }
 .btn-whatsapp:hover:not(:disabled) {
-  background: #20bd5a;
-  box-shadow: 0 4px 18px rgba(37,211,102,0.3);
+  background: #1daa58;
+  box-shadow: 0 4px 16px rgba(37,211,102,0.28);
   transform: translateY(-1px);
 }
-.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn:disabled { opacity: 0.42; cursor: not-allowed; }
 
-/* ─── Inputs ─────────────────────────────────────── */
+/* ─── Inputs ─────────────────────────────────────────────── */
 .input-clean {
-  background: #fff;
+  background: var(--surface);
   border: 1px solid var(--border);
-  color: var(--ink);
+  color: var(--text);
   padding: 0.7rem 1rem;
-  border-radius: 0;
   width: 100%;
   font-size: 0.875rem;
   transition: border-color 0.2s;
   outline: none;
+  border-radius: 0.5rem;
 }
-.input-clean::placeholder { color: #bbb; }
-.input-clean:focus { border-color: var(--gold); }
-.input-clean option { background: #fff; color: var(--ink); }
+.input-clean::placeholder { color: var(--ink-muted); opacity: 0.6; }
+.input-clean:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(185,146,47,0.10); }
+.input-clean option { background: var(--surface); color: var(--text); }
 
-/* ─── Divider ────────────────────────────────────── */
-.divider       { height: 1px; background: var(--border); }
-.divider-gold  { height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+/* ─── Dividers ───────────────────────────────────────────── */
+.divider      { height: 1px; background: var(--border); }
+.divider-gold { height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
 
-/* ─── Hero ───────────────────────────────────────── */
-.hero-container { position: relative; width: 100%; overflow: hidden; background: #050505; }
+/* ─── Hero ───────────────────────────────────────────────── */
+.hero-container { position: relative; width: 100%; overflow: hidden; background: var(--black); }
 
-/* ─── Product image container ────────────────────── */
+/* ─── Product card (shared) ──────────────────────────────── */
+.card-product {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.card-product:hover {
+  box-shadow: 0 12px 48px rgba(0,0,0,0.09);
+  transform: translateY(-4px);
+}
+
+/* ─── Product image container ────────────────────────────── */
 .product-img-wrap {
-  background: #080808;
+  background: var(--black);
   overflow: hidden;
   position: relative;
 }
@@ -169,7 +183,7 @@ html[lang="ar"] body { font-family: 'Tajawal', Arial, sans-serif; }
 }
 .card-product:hover .product-img-wrap img { transform: scale(1.05); }
 
-/* ─── Quick action bar ───────────────────────────── */
+/* ─── Quick actions ──────────────────────────────────────── */
 .quick-actions {
   position: absolute; inset: 0;
   background: rgba(0,0,0,0.22);
@@ -178,49 +192,64 @@ html[lang="ar"] body { font-family: 'Tajawal', Arial, sans-serif; }
 }
 .card-product:hover .quick-actions { opacity: 1; }
 .quick-btn {
-  width: 2.25rem; height: 2.25rem; background: #fff; border-radius: 50%;
+  width: 2.25rem; height: 2.25rem; background: var(--surface); border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  color: var(--ink); border: none; cursor: pointer;
+  color: var(--text); border: none; cursor: pointer;
   transition: background 0.2s, color 0.2s;
 }
 .quick-btn:hover { background: var(--gold); color: #fff; }
 
-/* ─── Category circle ────────────────────────────── */
+/* ─── Category circle ────────────────────────────────────── */
 .cat-circle {
-  width: 104px; height: 104px; border-radius: 50%;
-  overflow: hidden; border: 2px solid var(--border);
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--border);
   transition: border-color 0.3s, box-shadow 0.3s;
 }
-.cat-circle:hover { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(185,146,47,0.12); }
-
-/* ─── Blog card ──────────────────────────────────── */
-.tip-card {
-  background: #fff; border: 1px solid var(--border);
-  overflow: hidden; transition: box-shadow 0.3s ease, transform 0.3s ease;
+.cat-circle:hover {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(185,146,47,0.10);
 }
-.tip-card:hover { box-shadow: 0 8px 36px rgba(0,0,0,0.09); transform: translateY(-3px); }
 
-/* ─── Instagram grid ─────────────────────────────── */
+/* ─── Blog / tip card ────────────────────────────────────── */
+.tip-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.tip-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); transform: translateY(-3px); }
+
+/* ─── Instagram grid ─────────────────────────────────────── */
 .insta-item { position: relative; overflow: hidden; aspect-ratio: 1; }
 .insta-item img { transition: transform 0.5s ease; }
 .insta-item:hover img { transform: scale(1.08); }
-.insta-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0); transition: background 0.3s; display: flex; align-items: center; justify-content: center; }
-.insta-item:hover .insta-overlay { background: rgba(0,0,0,0.35); }
+.insta-overlay {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0);
+  transition: background 0.3s;
+  display: flex; align-items: center; justify-content: center;
+}
+.insta-item:hover .insta-overlay { background: rgba(0,0,0,0.32); }
 
-/* ─── Admin dark ─────────────────────────────────── */
-.admin-body { background: #0d0d0d; min-height: 100vh; }
+/* ─── Admin ──────────────────────────────────────────────── */
+.admin-body    { background: #0d0d0d; min-height: 100vh; }
 .admin-sidebar { background: #111; border-color: rgba(255,255,255,0.07); }
 
-/* ─── Cart drawer ────────────────────────────────── */
-.drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 49; backdrop-filter: blur(3px); }
+/* ─── Cart drawer overlay ────────────────────────────────── */
+.drawer-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.48);
+  z-index: 49;
+  backdrop-filter: blur(3px);
+}
 
-/* ─── Scrollbar hide ─────────────────────────────── */
+/* ─── Misc helpers ───────────────────────────────────────── */
 .no-scroll { scrollbar-width: none; -ms-overflow-style: none; }
 .no-scroll::-webkit-scrollbar { display: none; }
 
-/* ─── RTL ────────────────────────────────────────── */
 [dir="rtl"] .flip-x { transform: scaleX(-1); }
 
-/* ─── Animations ─────────────────────────────────── */
-@keyframes fadeIn  { from { opacity: 0 } to { opacity: 1 } }
-@keyframes fadeUp  { from { opacity: 0; transform: translateY(22px) } to { opacity: 1; transform: translateY(0) } }
+/* ─── Animations ─────────────────────────────────────────── */
+@keyframes fadeIn  { from { opacity: 0 }                               to { opacity: 1 } }
+@keyframes fadeUp  { from { opacity: 0; transform: translateY(22px) }  to { opacity: 1; transform: translateY(0) } }

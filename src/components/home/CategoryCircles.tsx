@@ -52,7 +52,7 @@ export default function CategoryCircles() {
   const { isRTL } = useLanguage()
 
   return (
-    <section className="section-y bg-[#FAFAF8]">
+    <section className="section-y bg-cream">
       <div className="container">
         {/* Header */}
         <div className="text-center mb-12">

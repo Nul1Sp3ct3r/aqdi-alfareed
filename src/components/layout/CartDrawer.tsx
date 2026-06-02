@@ -16,10 +16,10 @@ export default function CartDrawer() {
       <div className="drawer-overlay" onClick={closeCart} />
 
       <div className={`fixed top-0 bottom-0 z-50 w-full xs:w-96 bg-white flex flex-col shadow-2xl
-        ${isRTL ? 'left-0 border-r border-[#E8E2D6]' : 'right-0 border-l border-[#E8E2D6]'}`}
+        ${isRTL ? 'left-0 border-r border-[#E8DEC8]' : 'right-0 border-l border-[#E8DEC8]'}`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-[#E8E2D6]">
+        <div className="flex items-center justify-between px-6 py-5 border-b border-[#E8DEC8]">
           <div className="flex items-center gap-3">
             <ShoppingBag size={20} className="text-gold" strokeWidth={1.5} />
             <h2 className="font-semibold text-ink">{t.cart.title}</h2>
@@ -40,7 +40,7 @@ export default function CartDrawer() {
         <div className="flex-1 overflow-y-auto py-4 px-5">
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-5 text-center">
-              <div className="w-16 h-16 rounded-full bg-cream border border-[#E8E2D6] flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-cream border border-[#E8DEC8] flex items-center justify-center">
                 <ShoppingBag size={24} className="text-ink-muted" />
               </div>
               <div>
@@ -57,7 +57,7 @@ export default function CartDrawer() {
             <ul className="space-y-3">
               {items.map(item => (
                 <li key={`${item.product.id}-${item.selectedSize}`}
-                  className="flex gap-4 p-3.5 bg-cream rounded-xl border border-[#E8E2D6]"
+                  className="flex gap-4 p-3.5 bg-cream rounded-xl border border-[#E8DEC8]"
                 >
                   <div className="relative w-20 h-20 rounded-lg overflow-hidden bg-[#080808] shrink-0">
                     <Image src={item.product.images[0]} alt={item.product.name[lang]}
@@ -67,7 +67,7 @@ export default function CartDrawer() {
                     <p className="text-sm font-medium text-ink truncate">{item.product.name[lang]}</p>
                     <p className="text-gold font-bold text-sm mt-0.5">{item.product.price.toLocaleString()} {t.common.sar}</p>
                     <div className="flex items-center justify-between mt-2.5">
-                      <div className="flex items-center border border-[#E8E2D6] rounded-lg overflow-hidden">
+                      <div className="flex items-center border border-[#E8DEC8] rounded-lg overflow-hidden">
                         <button onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
                           className="px-2.5 py-1.5 text-ink-muted hover:text-gold hover:bg-cream transition-colors">
                           <Minus size={12} />
@@ -92,7 +92,7 @@ export default function CartDrawer() {
 
         {/* Footer */}
         {items.length > 0 && (
-          <div className="border-t border-[#E8E2D6] px-5 py-5 space-y-4 bg-cream">
+          <div className="border-t border-[#E8DEC8] px-5 py-5 space-y-4 bg-cream">
             <div className="space-y-2">
               <div className="flex justify-between text-sm text-ink-muted">
                 <span>{t.cart.subtotal}</span>
@@ -102,7 +102,7 @@ export default function CartDrawer() {
                 <span>{t.cart.shipping}</span>
                 <span className="text-emerald-600 font-medium">{t.cart.freeShipping}</span>
               </div>
-              <div className="flex justify-between font-bold text-base pt-2.5 border-t border-[#E8E2D6]">
+              <div className="flex justify-between font-bold text-base pt-2.5 border-t border-[#E8DEC8]">
                 <span className="text-ink">{t.cart.orderTotal}</span>
                 <span className="text-gold">{subtotal.toLocaleString()} {t.common.sar}</span>
               </div>

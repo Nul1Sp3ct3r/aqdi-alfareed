@@ -10,7 +10,7 @@ export default function BestSellers() {
   const items = getBestSellers().slice(0, 4)
 
   return (
-    <section className="section-y bg-white">
+    <section className="section-y bg-cream-warm">
       <div className="container">
 
         {/* ── Section header ─────────────────────────── */}

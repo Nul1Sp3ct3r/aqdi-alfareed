@@ -74,9 +74,9 @@ export default function ShopPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-white">
+      <main className="min-h-screen bg-cream">
         {/* Page header — dark luxury */}
-        <div className="bg-[#050505] py-14 px-4">
+        <div className="bg-jet-deep py-14 px-4">
           <div className="container">
             <span className="label-luxury block mb-3">
               {isRTL ? 'متجرنا' : 'Our Store'}
@@ -122,7 +122,7 @@ export default function ShopPage() {
               {/* Mobile filters toggle */}
               <button
                 onClick={() => setMobileFilters(true)}
-                className="lg:hidden flex items-center gap-2 px-4 py-3 bg-white border border-[#E8E2D6] text-ink-muted hover:text-gold hover:border-gold text-sm transition-all"
+                className="lg:hidden flex items-center gap-2 px-4 py-3 bg-white border border-[#E8DEC8] text-ink-muted hover:text-gold hover:border-gold text-sm transition-all"
               >
                 <SlidersHorizontal size={14} strokeWidth={1.5} />
                 {t.shop.filters}
@@ -132,7 +132,7 @@ export default function ShopPage() {
               <div className="relative">
                 <button
                   onClick={() => setSortOpen(!sortOpen)}
-                  className="flex items-center gap-2 px-4 py-3 bg-white border border-[#E8E2D6] text-ink-muted hover:text-gold hover:border-gold text-sm transition-all whitespace-nowrap"
+                  className="flex items-center gap-2 px-4 py-3 bg-white border border-[#E8DEC8] text-ink-muted hover:text-gold hover:border-gold text-sm transition-all whitespace-nowrap"
                 >
                   {sortOpts.find(s => s.key === sortBy)!.label}
                   <ChevronDown
@@ -145,7 +145,7 @@ export default function ShopPage() {
                   <>
                     <div className="fixed inset-0 z-10" onClick={() => setSortOpen(false)} />
                     <div
-                      className={`absolute top-full mt-2 z-20 bg-white border border-[#E8E2D6] overflow-hidden shadow-card-hover min-w-[185px] ${isRTL ? 'left-0' : 'right-0'}`}
+                      className={`absolute top-full mt-2 z-20 bg-white border border-[#E8DEC8] overflow-hidden shadow-card-hover min-w-[185px] ${isRTL ? 'left-0' : 'right-0'}`}
                     >
                       {sortOpts.map(opt => (
                         <button
@@ -154,7 +154,7 @@ export default function ShopPage() {
                           className={`w-full text-start px-4 py-3 text-sm transition-colors
                             ${sortBy === opt.key
                               ? 'text-gold bg-gold/5 font-semibold'
-                              : 'text-ink-muted hover:text-ink hover:bg-[#FAFAF8]'
+                              : 'text-ink-muted hover:text-ink hover:bg-cream'
                             }`}
                         >
                           {opt.label}
@@ -187,7 +187,7 @@ export default function ShopPage() {
             <div className="flex-1 min-w-0">
               {filtered.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-24 text-center gap-5">
-                  <div className="w-16 h-16 border border-[#E8E2D6] flex items-center justify-center text-2xl text-ink-muted">
+                  <div className="w-16 h-16 border border-[#E8DEC8] flex items-center justify-center text-2xl text-ink-muted">
                     ✦
                   </div>
                   <h3 className="text-xl font-semibold text-ink">{t.shop.noResults}</h3>

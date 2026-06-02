@@ -19,7 +19,7 @@ export default function TipsSection() {
   ]
 
   return (
-    <section id="tips" className="section-y bg-[#FAFAF8]">
+    <section id="tips" className="section-y bg-cream-warm">
       <div className="container">
         {/* Header */}
         <div className="text-center mb-12">

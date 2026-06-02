@@ -31,7 +31,7 @@ export default function ProductFilters({ filters, onFilterChange, onClear, isMob
     <>
       {isMobileOpen && <div className="fixed inset-0 bg-black/40 z-30 lg:hidden" onClick={onMobileClose} />}
 
-      <aside className={`fixed top-0 bottom-0 z-40 w-72 bg-white border-e border-[#E8E2D6] overflow-y-auto
+      <aside className={`fixed top-0 bottom-0 z-40 w-72 bg-white border-e border-[#E8DEC8] overflow-y-auto
         transition-transform duration-300 lg:static lg:transform-none lg:z-auto lg:w-56 lg:bg-transparent lg:border-0
         ${isMobileOpen ? 'translate-x-0 start-0' : '-translate-x-full start-0 lg:translate-x-0'}`}
       >
@@ -100,7 +100,7 @@ export default function ProductFilters({ filters, onFilterChange, onClear, isMob
               <label key={key} className="flex items-center gap-3 cursor-pointer py-2 px-1 group">
                 <div onClick={() => set({ [key]: !filters[key] })}
                   className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-colors cursor-pointer
-                    ${filters[key] ? 'bg-gold border-gold' : 'border-[#ccc] group-hover:border-gold'}`}
+                    ${filters[key] ? 'bg-gold border-gold' : 'border-[#C8BFA8] group-hover:border-gold'}`}
                 >
                   {filters[key] && <span className="text-white text-[9px]">✓</span>}
                 </div>
@@ -116,7 +116,7 @@ export default function ProductFilters({ filters, onFilterChange, onClear, isMob
 
 function FilterBlock({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="mb-6 pb-6 border-b border-[#E8E2D6] last:border-0">
+    <div className="mb-6 pb-6 border-b border-[#E8DEC8] last:border-0">
       <h3 className="text-[11px] tracking-[0.18em] uppercase text-gold font-semibold mb-3">{title}</h3>
       <div className="space-y-0.5">{children}</div>
     </div>

@@ -13,7 +13,7 @@ export default function InstagramGallery() {
   const imgProducts = products.slice(0, 8)
 
   return (
-    <section className="section-y bg-white">
+    <section className="section-y bg-cream">
       <div className="container">
         {/* Header */}
         <div className="text-center mb-10">

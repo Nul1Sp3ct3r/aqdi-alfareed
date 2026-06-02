@@ -39,7 +39,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
   )
 
   return (
-    <div className="group relative bg-white border border-[#EDE8DF] rounded-2xl overflow-hidden transition-all duration-300 ease-out shadow-[0_2px_12px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_56px_rgba(0,0,0,0.10)] hover:-translate-y-[6px]">
+    <div className="group relative bg-white border border-[#E8DEC8] rounded-2xl overflow-hidden transition-all duration-300 ease-out shadow-[0_2px_12px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_56px_rgba(0,0,0,0.10)] hover:-translate-y-[6px]">
 
       {/* ── Image block ───────────────────────────────── */}
       <Link
@@ -117,7 +117,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
             </span>
           )}
           {product.isBestSeller && !product.isNew && (
-            <span className="inline-flex items-center bg-[#111] text-[#D4AF37] text-[8.5px] font-bold px-2.5 py-[3.5px] rounded-full tracking-[0.12em] uppercase leading-none border border-[#D4AF37]/25">
+            <span className="inline-flex items-center bg-[#111] text-[#D8B45A] text-[8.5px] font-bold px-2.5 py-[3.5px] rounded-full tracking-[0.12em] uppercase leading-none border border-[#D8B45A]/25">
               ✦ {lang === 'ar' ? 'الأكثر مبيعاً' : 'Top Pick'}
             </span>
           )}
@@ -175,7 +175,7 @@ export default function ProductCard({ product, priority = false }: ProductCardPr
           className="h-px mb-3.5 rounded-full"
           style={{
             background:
-              'linear-gradient(to right, rgba(185,146,47,0.40), rgba(212,175,55,0.18), rgba(185,146,47,0.03))',
+              'linear-gradient(to right, rgba(185,146,47,0.38), rgba(216,180,90,0.16), rgba(185,146,47,0.03))',
           }}
         />
 

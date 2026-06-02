@@ -19,7 +19,7 @@ export default function CartPage() {
         <Navbar />
         <main className="min-h-screen bg-cream flex items-center justify-center">
           <div className="text-center max-w-sm mx-auto px-4 py-20">
-            <div className="w-20 h-20 rounded-full bg-white border border-[#E8E2D6] flex items-center justify-center mx-auto mb-5 shadow-card">
+            <div className="w-20 h-20 rounded-full bg-white border border-[#E8DEC8] flex items-center justify-center mx-auto mb-5 shadow-card">
               <ShoppingBag size={32} className="text-gold" strokeWidth={1.5} />
             </div>
             <h2 className="text-2xl display-serif text-ink mb-3">{t.cart.empty}</h2>
@@ -51,7 +51,7 @@ export default function CartPage() {
             <div className="lg:col-span-2 space-y-4">
               {items.map(item => (
                 <div key={`${item.product.id}-${item.selectedSize}`}
-                  className="flex gap-5 p-5 bg-white rounded-xl border border-[#E8E2D6] shadow-card"
+                  className="flex gap-5 p-5 bg-white rounded-xl border border-[#E8DEC8] shadow-card"
                 >
                   <Link href={`/product/${item.product.id}`}>
                     <div className="relative w-24 h-24 rounded-lg overflow-hidden bg-[#080808] shrink-0">
@@ -74,7 +74,7 @@ export default function CartPage() {
                       </button>
                     </div>
                     <div className="flex items-center justify-between mt-4">
-                      <div className="flex items-center border border-[#E8E2D6] rounded overflow-hidden">
+                      <div className="flex items-center border border-[#E8DEC8] rounded overflow-hidden">
                         <button onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
                           className="px-3 py-2 text-ink-muted hover:text-gold hover:bg-cream transition-colors"><Minus size={14} /></button>
                         <span className="px-4 text-sm font-medium text-ink">{item.quantity}</span>
@@ -104,7 +104,7 @@ export default function CartPage() {
 
             {/* Summary */}
             <div className="space-y-4">
-              <div className="p-6 bg-white rounded-xl border border-[#E8E2D6] shadow-card">
+              <div className="p-6 bg-white rounded-xl border border-[#E8DEC8] shadow-card">
                 <h2 className="font-semibold text-ink text-lg mb-5 display-serif">{t.cart.orderTotal}</h2>
                 <div className="space-y-3 mb-5">
                   <div className="flex justify-between text-sm text-ink-muted">
@@ -114,7 +114,7 @@ export default function CartPage() {
                     <span>{t.cart.shipping}</span><span className="text-emerald-600 font-medium">{t.cart.freeShipping}</span>
                   </div>
                 </div>
-                <div className="flex justify-between font-bold text-base pt-4 border-t border-[#E8E2D6] mb-6">
+                <div className="flex justify-between font-bold text-base pt-4 border-t border-[#E8DEC8] mb-6">
                   <span className="text-ink">{t.cart.orderTotal}</span>
                   <span className="text-gold text-xl">{subtotal.toLocaleString()} {t.common.sar}</span>
                 </div>
@@ -127,7 +127,7 @@ export default function CartPage() {
               </div>
 
               {/* Promo */}
-              <div className="p-5 bg-white rounded-xl border border-[#E8E2D6]">
+              <div className="p-5 bg-white rounded-xl border border-[#E8DEC8]">
                 <h3 className="text-sm font-medium text-ink mb-3 flex items-center gap-2">
                   <Tag size={15} className="text-gold" />{t.cart.promoCode}
                 </h3>
